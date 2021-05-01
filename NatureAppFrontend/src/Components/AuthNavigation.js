@@ -5,7 +5,7 @@ import {withNavigation} from "react-navigation";
 const AuthNavigation = function({navigation, buttonTitle, textLink, navigationText}) {
     return(
         <View>
-            <TouchableOpacity style={styles.Button} onPress={() => console.log("Kristo é gay!")}>
+            <TouchableOpacity style={styles.Button} onPress={() => console.log("PLS KILL ME!")}>
                 <Text style={styles.Text}>{buttonTitle}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress = {() => navigation.navigate(navigationText)}>
