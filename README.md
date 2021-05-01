@@ -9,4 +9,4 @@ This project is being developed by the following members:
 - Filipe Mota
 - João Cristo
 - Miguel Silva
-- Guilheme Cristo
+- Guilheme Silva
