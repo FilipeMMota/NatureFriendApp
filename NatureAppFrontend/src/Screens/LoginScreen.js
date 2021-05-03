@@ -6,7 +6,7 @@ const LoginScreen = function () {
     return (
         <View style={styles.Content}>
             <Image style={styles.icon} source={require('../../assets/IconNature.png')} />
-            <Text style={styles.title}>Nature </Text>
+            <Text style={styles.title}>Nature Friend</Text>
 
             <TextInput style={styles.labels} placeholder="Username" autoCapitalize="none" autoCorrect={false}/>
             <TextInput secureTextEntry style={styles.labels} placeholder="Password" autoCapitalize="none" autoCorrect={false}/>
