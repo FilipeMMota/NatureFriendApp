@@ -1,6 +1,6 @@
-const {Client} = require('pg');
+const {Client} = require('pg'); // importação da biblioteca do postgreSQL
 
-const db = new Client({
+const db = new Client({ // onde é colocado todos os dados necessários para a conexão à base de dados
     user: "postgres",
     host: "localhost",
     database: "NatureFriend",
@@ -8,6 +8,6 @@ const db = new Client({
     port: 5432,
 });
 
-db.connect(console.log("Connectado à base de dados"));
+db.connect(console.log("Connectado à base de dados")); // Coneção à base de dados
 
-module.exports = db;
+module.exports = db; // Exportação da conexão à base de dados para fazer querys
