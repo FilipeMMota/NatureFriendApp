@@ -31,7 +31,7 @@ router.post("/signup", (req, res, next) => { // Rota para a criação de um user
             const query = `INSERT INTO users (user_email, user_name, user_password, date) VALUES ('${email}', '${username}', '${hash}', '${getCurrentDate()}')` // Crição de um novo User
             await db.query(query); 
 
-            const token = jwt.sign({ email, username }, process.env.jwt_key); // Criação de um token que tem associado o emaill e o username introduzidos
+            const token = jwt.sign({ email, username }, process.env.JWT_KEY); // Criação de um token que tem associado o emaill e o username introduzidos
             res.send({token}); //envio do token para uso posterior nos requests
         }catch(err){
             return res.status(422).send("Username ou email já existente"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro

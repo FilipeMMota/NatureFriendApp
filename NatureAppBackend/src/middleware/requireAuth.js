@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
         return res.status(401).send({error: "Precisa de ter a sessão iniciada."});
     }
 
-    jwt.verify(token, process.env.jwt_key, async (err, payload) => { // verificação da existência do token
+    jwt.verify(token, process.env.JWT_KEY, async (err, payload) => { // verificação da existência do token
         if(err){
             return res.status(401).send({error: "Precisa de ter a sessão iniciada."});
         }
