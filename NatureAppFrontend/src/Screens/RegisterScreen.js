@@ -17,7 +17,7 @@ const RegisterScreen = function ({ navigation }) {
             <AuthNavigation 
                 buttonTitle="Register"
                 textLink="Already have an Account?"
-                navigationText="Login"
+                navigationText="Login" //CHANGE THIS TO "User" WHEN DONE
             />
         </View>
     );
