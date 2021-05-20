@@ -24,7 +24,12 @@ const navigator = createStackNavigator({
   Main: MainScreen,
   Map: MapScreen,
   Posts: PostsScreen,
-  User: UserScreen
+  User: {
+    screen: UserScreen,
+    navigationOptions:{
+      headerShown: false,
+    }
+  }
 }, {
   initialRoutName: "Register",
   defaultNavigationOptions: {
