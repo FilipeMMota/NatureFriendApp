@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet,View, TouchableOpacity, Touchable, ImageBackground} from 'react-native';
 import {AntDesign} from "@expo/vector-icons";
+import Posts from '../Components/Posts';
 
 const UserScreen = function() {
     return (
@@ -22,29 +23,32 @@ const UserScreen = function() {
             <Text style= {styles.Text}>My Posts</Text>
 
             <View style= {styles.Posts}>
-                <View style= {styles.Individual}>
-                    <Text style= {styles.Titulo}>Lixo na floresta</Text>
-                    <Text style= {styles.Descricao} >bla bla bla bla</Text>
-                    <Text style= {styles.Data}>Created on 27/05/2021</Text>
-                </View>
-                <View style= {styles.Individual}>
-                    <Text style= {styles.Titulo}>Rio Poluido</Text>
-                    <Text style= {styles.Descricao} >bla bla bla bla</Text>
-                    <Text style= {styles.Data}>Created on 27/05/2021</Text>
-                </View>
-                <View style= {styles.Individual}>
-                    <Text style= {styles.Titulo}>Rua Suja</Text>
-                    <Text style= {styles.Descricao} >bla bla bla bla</Text>
-                    <Text style= {styles.Data}>Created on 27/05/2021</Text>
-                </View>
-                <View style= {styles.Individual}>
-                    <Text style= {styles.Titulo}>Arvores Vandlizadas</Text>
-                    <Text style= {styles.Descricao} >bla bla bla bla</Text>
-                    <Text style= {styles.Data}>Created on 27/05/2021</Text>
-                </View>
+
+                <Posts
+                PostTitle = 'Lixo na Floresta'
+                Descrição = 'bla bla bla'
+                Data = 'Created on 27/05/2021'
+                />
+                <Posts
+                PostTitle = 'Rio Poluido'
+                Descrição = 'bla bla bla'
+                Data = 'Created on 27/05/2021'
+                />
+                <Posts
+                PostTitle = 'Rua Suja'
+                Descrição = 'bla bla bla'
+                Data = 'Created on 27/05/2021'
+                />
+                <Posts
+                PostTitle = 'Arvores Vandlizadas'
+                Descrição = 'bla bla bla'
+                Data = 'Created on 27/05/2021'
+                />
+ 
             </View>
-            
-            
+            <TouchableOpacity style={styles.SignOff} onPress={() => console.log("saiu")}>
+                <Text style={styles.TextSignOff}>SignOff</Text>
+            </TouchableOpacity>  
         </View>
     )
 }
@@ -95,44 +99,26 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center'  
     },
-
-    Individual:{
-        width:270,
-        height:100,
-        backgroundColor: "#1A3B47",
-        borderRadius: 25,
-        marginTop: 25
+    SignOff: {
+        backgroundColor: "#011936",
+        borderRadius: 15,
+        paddingHorizontal: 15,
+        borderWidth: 0,
+        marginTop: 20,
+        elevation: 9,
+        height: 40,
+        width: 135,
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "center"
     },
-
-    Titulo: {
-        fontSize:15,
-        alignSelf:'center',
-        marginLeft:35,
+    Text: {
+        fontSize:30,
         marginTop:20,
-        color:"#FFFFFF",
+        alignSelf:'flex-start',
+        marginLeft: 50,
         fontWeight: 'bold'
-
     },
-
-    Descricao: {
-        fontSize:10,
-        alignSelf:'center',
-        marginLeft:35,
-        color:"#FFFFFF",
-        opacity:0.5
-    },
-
-    Data: {
-        fontSize:10,
-        alignSelf:'center',
-        marginLeft:35,
-        marginTop:8,
-        color:"#FFFFFF",
-        opacity:0.5
-    }
-
-
-
 });
 
 export default UserScreen;
