@@ -14,10 +14,12 @@ router.get("/signup", async (req, res) => { //Rota para a obtenção dos useres
 });
 
 router.post("/signup", (req, res, next) => { // Rota para a criação de um user
-    const {email, username, password, retyped_password} = req.body; // Desestruturação das variáveis que se encontram no corpo do request
+    const {email, username, password} = req.body; // Desestruturação das variáveis que se encontram no corpo do request
+    /*
     if(password != retyped_password){ // Verificação das passwords
         return next("Passwords do not match");
     }
+    */
     const getCurrentDate = () => { // Obtenção da data a que este request foi executado
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
