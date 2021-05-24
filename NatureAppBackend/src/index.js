@@ -14,5 +14,5 @@ app.get("/", requireAuth, (req, res) => { // Rota default
 
 app.listen(port, () => { // Iniciação do nó
     console.log(`App running on port ${port}.`)
-})
+});
 
