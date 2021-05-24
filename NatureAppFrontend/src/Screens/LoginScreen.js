@@ -1,18 +1,24 @@
-import React from 'react';
-import { Text, View, StyleSheet, TextInput, Image } from "react-native";
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
 import AuthNavigation from "../Components/AuthNavigation";
 
-const LoginScreen = function () { 
+const LoginScreen = function () {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     return (
         <View style={styles.Content}>
             <Image style={styles.icon} source={require('../../assets/IconNature.png')} />
             <Text style={styles.title}>Nature Friend</Text>
 
-            <TextInput style={styles.labels} placeholder="Username" autoCapitalize="none" autoCorrect={false}/>
-            <TextInput secureTextEntry style={styles.labels} placeholder="Password" autoCapitalize="none" autoCorrect={false}/>
+            <TextInput style={styles.labels} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" autoCorrect={false}/>
+            <TextInput secureTextEntry style={styles.labels} placeholder="Password" value={password} onChangeText={setPassword} autoCapitalize="none" autoCorrect={false}/>
+
+            <TouchableOpacity style={styles.Button} onPress={() => console.log("PLS DONT KILL ME!")}>
+                <Text style={styles.Text}>Login</Text>
+            </TouchableOpacity>
 
             <AuthNavigation 
-                buttonTitle="Login"
                 textLink="Create Account"
                 navigationText="Register"
             />
@@ -50,6 +56,24 @@ const styles = StyleSheet.create({
         height: 250,
         width: 200
         
+    },
+    Button: {
+        backgroundColor: "#011936",
+        borderRadius: 15,
+        paddingHorizontal: 15,
+        borderWidth: 0,
+        marginTop: 20,
+        elevation: 9,
+        height: 40,
+        width: 135,
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "center"
+    },
+    Text: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 15
     }
 });
 
