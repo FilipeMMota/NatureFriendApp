@@ -1,25 +1,40 @@
-import React from "react";
+import React , {useState, useContext} from "react";
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
 import AuthNavigation from "../Components/AuthNavigation";
+import {Context as AuthContext} from "../Context/AuthContext";
+
+const RegisterScreen = function ({ navigation }) {
+    const {state, signup} = useContext(AuthContext);
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [retypedPassword, setRetypedPassword] = useState("");
 
 
-const RegisterScreen = function ({ navigation }) { 
     return (
         <View style={styles.Content}>
             <Image style={styles.icon} source={require('../../assets/IconNature.png')} />
             <Text style={styles.title}>Nature Friend</Text>
 
-            <TextInput style={styles.labels} placeholder="Email" autoCapitalize="none" autoCorrect={false}/>
-            <TextInput style={styles.labels} placeholder="Username" autoCapitalize="none" autoCorrect={false}/>
-            <TextInput secureTextEntry style={styles.labels} placeholder="Password" autoCapitalize="none" autoCorrect={false}/>
-            <TextInput secureTextEntry style={styles.labels} placeholder="Confirm Password" autoCapitalize="none" autoCorrect={false}/>
+            <TextInput style={styles.labels} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" autoCorrect={false}/>
+            <TextInput style={styles.labels} placeholder="Username" value={username} onChangeText={setUsername} autoCapitalize="none" autoCorrect={false}/>
+            <TextInput secureTextEntry style={styles.labels} placeholder="Password" value={password} onChangeText={setPassword} autoCapitalize="none" autoCorrect={false}/>
+            <TextInput secureTextEntry style={styles.labels} placeholder="Confirm Password" value={retypedPassword} onChangeText={setRetypedPassword} autoCapitalize="none" autoCorrect={false}/>
+
+            <TouchableOpacity style={styles.Button} onPress={() => signup({email, username, password})}>
+                <Text style={styles.Text}>Register</Text>
+            </TouchableOpacity>
 
             <AuthNavigation 
-                buttonTitle="Register"
                 textLink="Already have an Account?"
-                navigationText="Login" //CHANGE THIS TO "User" WHEN DONE
+                navigationText="Login" //CHANGE THIS TO "Login" WHEN DONE
             />
+
+            <TouchableOpacity onPress = {() => navigation.navigate("Posts")}>
+                <Text>Go to other screens</Text>
+            </TouchableOpacity>
         </View>
+        
     );
 }
 
@@ -54,6 +69,30 @@ const styles = StyleSheet.create(
             height: 250,
             width: 200
             
+        },
+        Button: {
+            backgroundColor: "#011936",
+            borderRadius: 15,
+            paddingHorizontal: 15,
+            borderWidth: 0,
+            marginTop: 20,
+            elevation: 9,
+            height: 40,
+            width: 135,
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "center"
+        },
+        Text: {
+            color: "white",
+            fontWeight: "bold",
+            fontSize: 15
+        },
+        WarningText: {
+            color: "#E32A02",
+            marginTop: 10,
+            fontSize: 15,
+            alignSelf: "center" 
         }
     }
 );
