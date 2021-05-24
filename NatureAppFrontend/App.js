@@ -1,3 +1,4 @@
+import React from "react";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import LoginScreen from "./src/Screens/LoginScreen";
@@ -6,6 +7,7 @@ import MapScreen from "./src/Screens/MapScreen";
 import RegisterScreen from "./src/Screens/RegisterScreen";
 import UserScreen from "./src/Screens/UserScreen";
 import PostsScreen from "./src/Screens/PostsScreen";
+import {Provider as AuthProvider} from "./src/Context/AuthContext";
 
 
 const navigator = createStackNavigator({
@@ -37,4 +39,12 @@ const navigator = createStackNavigator({
   }
 });
 
-export default createAppContainer(navigator);
+const App = createAppContainer(navigator);
+
+export default () => {
+  return(
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
