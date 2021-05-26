@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
 import AuthNavigation from "../Components/AuthNavigation";
+import {Context as AuthContext} from "../Context/AuthContext";
 
 const LoginScreen = function () {
+    const {state, signin} = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,7 +16,9 @@ const LoginScreen = function () {
             <TextInput style={styles.labels} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" autoCorrect={false}/>
             <TextInput secureTextEntry style={styles.labels} placeholder="Password" value={password} onChangeText={setPassword} autoCapitalize="none" autoCorrect={false}/>
 
-            <TouchableOpacity style={styles.Button} onPress={() => console.log("PLS DONT KILL ME!")}>
+            {state.errorMessage ? <Text style={styles.errorMessage}>{state.errorMessage}</Text> : null}
+
+            <TouchableOpacity style={styles.Button} onPress={() => signin({email, password})}>
                 <Text style={styles.Text}>Login</Text>
             </TouchableOpacity>
 
@@ -74,6 +78,12 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         fontSize: 15
+    },
+    errorMessage: {
+        color: "#E32A02",
+        marginTop: 10,
+        fontSize: 15,
+        alignSelf: "center" 
     }
 });
 
