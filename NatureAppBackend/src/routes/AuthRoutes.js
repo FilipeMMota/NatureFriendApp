@@ -2,7 +2,6 @@ const express = require('express'); // Biblioteca para o desenvolvimento de APIs
 const db = require("../ConnectionDb");
 const jwt = require("jsonwebtoken"); // Biblioteca de um token de segurança
 const bcrypt = require("bcrypt"); // Biblioteca de hashing da password
-const { user } = require('../ConnectionDb');
 require("dotenv").config(); // Biblioteca para esconder informações importantes no código
 
 const router = express.Router();
@@ -15,11 +14,7 @@ router.get("/signup", async (req, res) => { //Rota para a obtenção dos useres
 
 router.post("/signup", (req, res, next) => { // Rota para a criação de um user
     const {email, username, password} = req.body; // Desestruturação das variáveis que se encontram no corpo do request
-    /*
-    if(password != retyped_password){ // Verificação das passwords
-        return next("Passwords do not match");
-    }
-    */
+
     const getCurrentDate = () => { // Obtenção da data a que este request foi executado
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
@@ -65,10 +60,6 @@ const comparePassword = function(candidatePassword, userPassword){
 
 router.post("/signin", async(req, res) => {
     const {email, password} = req.body;
-
-    if(!email && !password){
-        return res.status(422).send({error:"Por favor, escreva o email e a password"});
-    }
 
     try{
         const query = `SELECT user_name, user_email, user_password FROM users WHERE user_email = '${email}'` // Verifica se existe um user com este email e se existir retirra o resto dos dados
