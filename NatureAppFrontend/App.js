@@ -1,6 +1,8 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer, createSwitchNavigator} from "react-navigation";
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createStackNavigator} from "react-navigation-stack";
 import LoginScreen from "./src/Screens/LoginScreen";
 import MainScreen from "./src/Screens/MainScreen";
 import MapScreen from "./src/Screens/MapScreen";
@@ -8,9 +10,10 @@ import RegisterScreen from "./src/Screens/RegisterScreen";
 import UserScreen from "./src/Screens/UserScreen";
 import PostsScreen from "./src/Screens/PostsScreen";
 import {Provider as AuthProvider} from "./src/Context/AuthContext";
+import {navigationRef, setNavigator} from "./src/navigationRef";
 
 
-const navigator = createStackNavigator({
+const navigator = createSwitchNavigator({
   Register: {
     screen: RegisterScreen,
     navigationOptions:{
@@ -23,28 +26,44 @@ const navigator = createStackNavigator({
       headerShown: false,
     }
   },
-  Main: MainScreen,
-  Map: MapScreen,
-  Posts: PostsScreen,
-  User: {
-    screen: UserScreen,
-    navigationOptions:{
-      headerShown: false,
-    }
-  }
-}, {
-  initialRoutName: "Register",
-  defaultNavigationOptions: {
-    title: "Nature Friend"
-  }
+  appFlow: createMaterialBottomTabNavigator({
+    Main: { screen: MainScreen,  
+      navigationOptions:{  
+          tabBarLabel:'Camera'  
+      }
+    },
+    Map: { screen: MapScreen,  
+      navigationOptions:{  
+          tabBarLabel:'Map'  
+      }
+    },
+    userFlow: createStackNavigator({
+      User: {
+        screen: UserScreen,
+        navigationOptions:{
+          headerShown: false,
+        }
+      },
+      Posts: PostsScreen
+    },{
+      navigationOptions:{
+        tabBarLabel:'User'
+      }
+    })
+  }, {  
+    initialRouteName: "Main",  
+    activeColor: "#ffffff",  
+    inactiveColor: "#011936",  
+    barStyle: { backgroundColor: "#98EBB1" },  
+  })
 });
 
 const App = createAppContainer(navigator);
 
-export default () => {
+export default () => {// Dentro do app component, que é onde contém as propriedades de navegação entre screens, estamos a chamar a funão setNavigator para receber essas propriedades 
   return(
-    <AuthProvider>
-      <App />
+    <AuthProvider> 
+      <App ref={(navigator) => {setNavigator(navigator)}}/> 
     </AuthProvider>
   );
 }
