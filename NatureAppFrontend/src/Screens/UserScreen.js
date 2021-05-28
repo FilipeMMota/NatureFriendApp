@@ -1,9 +1,14 @@
-import React from 'react';
-import { Text, StyleSheet,View, TouchableOpacity, Touchable, ImageBackground} from 'react-native';
+import React, {useContext} from 'react';
+import { Text, StyleSheet,View, TouchableOpacity, SafeAreaView} from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {Context as AuthContext} from "../Context/AuthContext";
 import {AntDesign} from "@expo/vector-icons";
 import Posts from '../Components/Posts';
 
 const UserScreen = function() {
+
+    const {signout} = useContext(AuthContext);
+
     return (
         <View style={styles.Content}>
             <View style={styles.Parent}>
@@ -38,16 +43,11 @@ const UserScreen = function() {
                 PostTitle = 'Rua Suja'
                 Descrição = 'bla bla bla'
                 Data = 'Created on 27/05/2021'
-                />
-                <Posts
-                PostTitle = 'Arvores Vandlizadas'
-                Descrição = 'bla bla bla'
-                Data = 'Created on 27/05/2021'
-                />
+                />   
  
             </View>
-            <TouchableOpacity style={styles.SignOff} onPress={() => console.log("saiu")}>
-                <Text style={styles.TextSignOff}>SignOff</Text>
+            <TouchableOpacity style={styles.SignOut} onPress={() => signout()}>
+                <Text style={styles.TextSignOut}>Sign Out</Text>
             </TouchableOpacity>  
         </View>
     )
@@ -93,13 +93,14 @@ const styles = StyleSheet.create({
     },
     Posts: {
         width:320,
-        height:600,
+        height: 415,
+        justifyContent: "space-around",
         backgroundColor: "#FFFFFF",
         borderRadius: 25,
         marginTop: 15,
         alignItems: 'center'  
     },
-    SignOff: {
+    SignOut: {
         backgroundColor: "#011936",
         borderRadius: 15,
         paddingHorizontal: 15,
@@ -112,13 +113,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignSelf: "center"
     },
-    Text: {
-        fontSize:30,
-        marginTop:20,
-        alignSelf:'flex-start',
-        marginLeft: 50,
-        fontWeight: 'bold'
-    },
+    TextSignOut:{
+        color: "#ffffff",
+        fontWeight: "bold"
+    }
 });
 
 export default UserScreen;
