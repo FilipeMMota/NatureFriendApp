@@ -1,12 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet,View} from 'react-native';
+import { Text, StyleSheet, View, SafeAreaView} from 'react-native';
 
 const MainScreen = function() {
-    return (
-        <View>
+    return ( // teste
+        <SafeAreaView forceInset={{top: "always"}}> 
             <Text style={styles.textStyle}>Camera</Text>
-
-        </View>
+        </SafeAreaView>
     )
 }
 
