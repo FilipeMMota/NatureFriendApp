@@ -11,6 +11,11 @@ import UserScreen from "./src/Screens/UserScreen";
 import PostsScreen from "./src/Screens/PostsScreen";
 import {Provider as AuthProvider} from "./src/Context/AuthContext";
 import {navigationRef, setNavigator} from "./src/navigationRef";
+import {Entypo} from "@expo/vector-icons";
+import {FontAwesome} from "@expo/vector-icons";
+import {FontAwesome5} from "@expo/vector-icons";
+
+
 
 
 const navigator = createSwitchNavigator({
@@ -29,12 +34,14 @@ const navigator = createSwitchNavigator({
   appFlow: createMaterialBottomTabNavigator({
     Main: { screen: MainScreen,  
       navigationOptions:{  
-          tabBarLabel:'Camera'  
-      }
+        tabBarLabel:'Camera',
+        tabBarIcon:({tintColor})=>(<Entypo name="camera" color={tintColor} size={25}/>)  
+      }    
     },
     Map: { screen: MapScreen,  
       navigationOptions:{  
-          tabBarLabel:'Map'  
+          tabBarLabel:'Map',
+          tabBarIcon:({tintColor})=>(<FontAwesome5 name="map-marker-alt" color={tintColor} size={25}/>) 
       }
     },
     userFlow: createStackNavigator({
@@ -47,14 +54,15 @@ const navigator = createSwitchNavigator({
       Posts: PostsScreen
     },{
       navigationOptions:{
-        tabBarLabel:'User'
+        tabBarLabel:'User',
+        tabBarIcon:({tintColor})=>(<FontAwesome name="user" color={tintColor} size={25}/>) 
       }
     })
   }, {  
     initialRouteName: "Main",  
     activeColor: "#ffffff",  
     inactiveColor: "#011936",  
-    barStyle: { backgroundColor: "#98EBB1" },  
+    barStyle: { backgroundColor: "#018565", height: 50},  
   })
 });
 
