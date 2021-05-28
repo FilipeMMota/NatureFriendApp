@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const Posts = function ({PostTitle, Descrição, Data}) {
     return (
@@ -13,34 +14,36 @@ const Posts = function ({PostTitle, Descrição, Data}) {
 
 const styles = StyleSheet.create({
     Individual:{
-        width:270,
-        height:100,
-        backgroundColor: "#1A3B47",
+        width: wp("75%"),
+        height: hp("11.5%"),
+        backgroundColor: "#011936",
         borderRadius: 25,
+        marginBottom: hp("4%"),
+        elevation: 7
     },
 
     Titulo: {
-        fontSize:15,
+        fontSize: hp("2%"),
         alignSelf:'center',
-        marginLeft:35,
-        marginTop:20,
+        marginLeft: wp("10%"),
+        marginTop:hp("1%"),
         color:"#FFFFFF",
         fontWeight: 'bold'
     },
 
     Descricao: {
-        fontSize:10,
+        fontSize: hp("1.5%"),
         alignSelf:'center',
-        marginLeft:35,
+        marginLeft: wp("12%"),
         color:"#FFFFFF",
         opacity:0.5
     },
 
     Data: {
-        fontSize:10,
+        fontSize: hp("1.5%"),
         alignSelf:'center',
-        marginLeft:35,
-        marginTop:8,
+        marginLeft: wp("40%"),
+        marginTop:hp("2.5%"),
         color:"#FFFFFF",
         opacity:0.5
     }

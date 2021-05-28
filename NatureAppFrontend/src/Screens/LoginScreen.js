@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#98EBB1"
+        backgroundColor: "#47d397"
     },
     labels: {
         marginBottom: 15,

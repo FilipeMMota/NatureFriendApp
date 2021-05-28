@@ -1,54 +1,79 @@
 import React, {useContext} from 'react';
-import { Text, StyleSheet,View, TouchableOpacity, SafeAreaView} from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, FlatList, Alert} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Context as AuthContext} from "../Context/AuthContext";
 import {AntDesign} from "@expo/vector-icons";
 import Posts from '../Components/Posts';
 
-const UserScreen = function() {
+const UserScreen = function({navigation}) {
 
     const {signout} = useContext(AuthContext);
 
+    const AlertSignOut = () =>
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { text: "Yes", onPress: () => signout() }
+      ],
+      { cancelable: false }
+    )
+
+    const posts = [
+        { PostTitle: "Lixo na Floresta", Description: "Lixo nos pintelhos do Miguel" , Data: "Created on 29/05/2021"},
+        { PostTitle: "Lixo na Alameda", Description: "O Miguel é o lixo" , Data: "Created on 29/05/2021"},
+        { PostTitle: "Lixo em Carcavelos", Description: "Na casa do Gui" , Data: "Created on 29/05/2021"},
+        { PostTitle: "Lixo na Graça", Description: "Atão primo?!?😠" , Data: "Created on 29/05/2021"},
+        { PostTitle: "Lixo em Carnaxide", Description: "Santinho, tens conduzido?" , Data: "Created on 29/05/2021"}
+    ];
+    
+
     return (
         <View style={styles.Content}>
-            <View style={styles.Parent}>
+            <View>
                 <View style= {styles.ProfilePicture}>
+                    <View style = {styles.icon}>
+                        <TouchableOpacity>
+                            <AntDesign name="pluscircle" color={"#011936"} size={20}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style = {styles.Child}>
-                    <TouchableOpacity>
-                        <AntDesign name="pluscircle" size={20}/>
-                    </TouchableOpacity>
-                </View>
+                
             </View>
 
-            <Text style= {styles.Username}>User Name</Text>
-            <Text style= {styles.Registered}>Registered since 27/05/2021</Text>
+            <Text style= {styles.Username}>UserName</Text>
+            <Text style= {styles.RegisteredDate}>Registered since 69/69/2069</Text>
 
 
             <Text style= {styles.Text}>My Posts</Text>
 
             <View style= {styles.Posts}>
-
-                <Posts
-                PostTitle = 'Lixo na Floresta'
-                Descrição = 'bla bla bla'
-                Data = 'Created on 27/05/2021'
+                    
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor = {posts => posts.PostTitle}
+                    data={posts}
+                    renderItem = {( {item}) => {
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+                            <Posts
+                                PostTitle = {item.PostTitle}
+                                Descrição = {item.Description}
+                                Data = {item.Data}
+                            >
+                            </Posts>
+                        </TouchableOpacity>
+                    );
+                    }}
                 />
-                <Posts
-                PostTitle = 'Rio Poluido'
-                Descrição = 'bla bla bla'
-                Data = 'Created on 27/05/2021'
-                />
-                <Posts
-                PostTitle = 'Rua Suja'
-                Descrição = 'bla bla bla'
-                Data = 'Created on 27/05/2021'
-                />   
- 
             </View>
-            <TouchableOpacity style={styles.SignOut} onPress={() => signout()}>
+            <TouchableOpacity style={styles.SignOut} onPress={() => AlertSignOut()}>
                 <Text style={styles.TextSignOut}>Sign Out</Text>
-            </TouchableOpacity>  
+            </TouchableOpacity>
         </View>
     )
 }
@@ -56,56 +81,49 @@ const UserScreen = function() {
 const styles = StyleSheet.create({
     Content: {
         flex: 1,
-        backgroundColor: "#98EBB1",
+        backgroundColor: "#47d397",
         alignItems: "center",
     },
-    Parent:{
-        position: 'relative'
-    },
-    Child: {
-        position:'absolute',
-        top:110,
-        left:75
+    icon: {
+        paddingTop: 78,
+        paddingLeft: 88
     },
     ProfilePicture: {
-        width:100,
-        height:100,
+        width: 110,
+        height: 110,
         backgroundColor: "#FFFFFF",
         borderRadius: 100,
-        marginTop: 35
+        marginTop: hp("9%")
     },
     Username: {
-        fontSize: 30,
+        fontSize: hp("4.2%"),
         fontWeight: 'bold'
 
     },
-    Registered: {
-        fontSize: 13,
+    RegisteredDate: {
+        fontSize: hp("1.8%"),
         opacity: 0.5
     
     },
     Text: {
-        fontSize:30,
-        marginTop:20,
+        fontSize: hp("3.7%"),
+        marginTop: hp("3%"),
         alignSelf:'flex-start',
-        marginLeft: 50,
+        paddingLeft: wp("15%"),
         fontWeight: 'bold'
     },
     Posts: {
-        width:320,
-        height: 415,
+        width: wp("80%"),
+        height: hp("45%"),
         justifyContent: "space-around",
-        backgroundColor: "#FFFFFF",
-        borderRadius: 25,
-        marginTop: 15,
+        borderRadius: 100,
         alignItems: 'center'  
     },
     SignOut: {
         backgroundColor: "#011936",
         borderRadius: 15,
         paddingHorizontal: 15,
-        borderWidth: 0,
-        marginTop: 20,
+        marginTop: hp("2%"),
         elevation: 9,
         height: 40,
         width: 135,
