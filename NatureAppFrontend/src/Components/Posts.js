@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
         height:100,
         backgroundColor: "#1A3B47",
         borderRadius: 25,
-        marginTop: 25
     },
 
     Titulo: {
