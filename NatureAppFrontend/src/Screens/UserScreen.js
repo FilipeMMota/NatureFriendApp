@@ -38,7 +38,7 @@ const UserScreen = function({navigation}) {
                 <View style= {styles.ProfilePicture}>
                     <View style = {styles.icon}>
                         <TouchableOpacity>
-                            <AntDesign name="pluscircle" color={"#011936"} size={20}/>
+                            <AntDesign name="pluscircle" color={"#19456b"} size={20}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -49,7 +49,7 @@ const UserScreen = function({navigation}) {
             <Text style= {styles.RegisteredDate}>Registered since 69/69/2069</Text>
 
 
-            <Text style= {styles.Text}>My Posts</Text>
+            <Text style={styles.Text}>My Posts</Text>
 
             <View style= {styles.Posts}>
                     
@@ -81,7 +81,7 @@ const UserScreen = function({navigation}) {
 const styles = StyleSheet.create({
     Content: {
         flex: 1,
-        backgroundColor: "#47d397",
+        backgroundColor: "#f1f3f8",
         alignItems: "center",
     },
     icon: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         height: 110,
         backgroundColor: "#FFFFFF",
         borderRadius: 100,
-        marginTop: hp("9%")
+        marginTop: hp("6%")
     },
     Username: {
         fontSize: hp("4.2%"),
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'  
     },
     SignOut: {
-        backgroundColor: "#011936",
+        backgroundColor: "#19456b",
         borderRadius: 15,
         paddingHorizontal: 15,
         marginTop: hp("2%"),

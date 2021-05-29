@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     Individual:{
         width: wp("75%"),
         height: hp("11.5%"),
-        backgroundColor: "#011936",
+        backgroundColor: "#70af85",
         borderRadius: 25,
         marginBottom: hp("4%"),
         elevation: 7
