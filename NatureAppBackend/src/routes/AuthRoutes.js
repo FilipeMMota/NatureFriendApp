@@ -3,7 +3,6 @@ const db = require("../ConnectionDb");
 const jwt = require("jsonwebtoken"); // Biblioteca de um token de segurança
 const bcrypt = require("bcrypt"); // Biblioteca de hashing da password
 const requireAuth = require("../middleware/requireAuth");
-const { response } = require('express');
 require("dotenv").config(); // Biblioteca para esconder informações importantes no código
 
 const router = express.Router();
