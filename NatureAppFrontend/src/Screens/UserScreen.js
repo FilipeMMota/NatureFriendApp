@@ -1,13 +1,18 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, FlatList, Alert} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Context as AuthContext} from "../Context/AuthContext";
 import {AntDesign} from "@expo/vector-icons";
+import Moment from 'moment'; // Usado para formatar a data recebida da base de dados
 import Posts from '../Components/Posts';
 
 const UserScreen = function({navigation}) {
 
-    const {signout} = useContext(AuthContext);
+    const {state, signout, fetchUser} = useContext(AuthContext);
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
 
     const AlertSignOut = () =>
     Alert.alert(
@@ -45,8 +50,8 @@ const UserScreen = function({navigation}) {
                 
             </View>
 
-            <Text style= {styles.Username}>UserName</Text>
-            <Text style= {styles.RegisteredDate}>Registered since 69/69/2069</Text>
+            <Text style= {styles.Username}>{state.username}</Text>
+            <Text style= {styles.RegisteredDate}>Registered since {Moment(state.date).format('DD MMM YYYY')}</Text>
 
 
             <Text style={styles.Text}>My Posts</Text>
