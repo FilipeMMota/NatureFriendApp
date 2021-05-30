@@ -1,13 +1,17 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import MapView from "react-native-maps";
 
 const MapScreen = () => {
-    return <Text style={styles.text}>THIS IS THE MAP AREA</Text>;
+    return <MapView 
+        style={styles.map}
+        mapType= "hybrid"
+    />
 };
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 30
+    map: {
+        flex: 1
     }
 });
 
