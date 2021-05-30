@@ -13,6 +13,8 @@ const authReducer = (state, action) => {
             return {...state, errorMessage: ""};
         case "signout":
             return {token: null, errorMessage: ""}
+        case "user_data":
+            return {...state, username: action.username, date: action.date}
         default:
             return state;
     }
@@ -29,7 +31,7 @@ const checkAuthentication = (dispatch) => {
         const token = await AsyncStorage.getItem("token");
         if(token){
             dispatch({type: "authentication", payload: token});
-            navigate("Main");
+            navigate("Camera");
         }else{
             navigate("Register"); 
         }
@@ -47,7 +49,7 @@ const signup = (dispatch) => {
                 const response = await axios.post("http://192.168.1.157:5000/signup", {email, username, password})
                 await AsyncStorage.setItem("token", response.data.token);
                 dispatch({type: "authentication", payload: response.data.token});
-                navigate("Main");
+                navigate("Camera");
             }
         }catch(err){
             dispatch({type:"add_error", payload:"Este email já existe!"});
@@ -64,7 +66,7 @@ const signin = (dispatch) => {
                 const response = await axios.post("http://192.168.1.157:5000/signin", {email, password})
                 await AsyncStorage.setItem("token", response.data.token);
                 dispatch({type: "authentication", payload: response.data.token});
-                navigate("Main");
+                navigate("Camera");
             }
             
         }catch(err){
@@ -82,8 +84,20 @@ const signout = (dispatch) => {
     };
 };
 
+const fetchUser = (dispatch) => {
+    return async () => {
+        const token = await AsyncStorage.getItem("token");
+        const response = await axios({
+            method: 'get',
+            url: 'http://192.168.1.157:5000/user',
+            headers: {'Authorization': `Bearer$${token}`}
+          });
+        dispatch({type: "user_data", username: response.data.username, date: response.data.date});
+    }
+}
+
 export const {Provider, Context} = DataContext(
     authReducer,
-    {signup, signin, signout, clearErrorMessage, checkAuthentication},
-    {token: null, errorMessage: ""}
+    {signup, signin, signout, clearErrorMessage, checkAuthentication, fetchUser},
+    {token: null, errorMessage: "", username: "", date: ""}
 );
