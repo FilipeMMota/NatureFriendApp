@@ -1,10 +1,9 @@
 import React from "react";
 import { createAppContainer, createSwitchNavigator} from "react-navigation";
-import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator} from "react-navigation-stack";
 import LoginScreen from "./src/Screens/LoginScreen";
-import MainScreen from "./src/Screens/MainScreen";
+import CameraScreen from "./src/Screens/CameraScreen";
 import MapScreen from "./src/Screens/MapScreen";
 import RegisterScreen from "./src/Screens/RegisterScreen";
 import UserScreen from "./src/Screens/UserScreen";
@@ -32,7 +31,7 @@ const navigator = createSwitchNavigator({
     }
   },
   appFlow: createMaterialBottomTabNavigator({
-    Main: { screen: MainScreen,  
+    Camera: { screen: CameraScreen,  
       navigationOptions:{  
         tabBarLabel:'Camera',
         tabBarIcon:({tintColor})=>(<Entypo name="camera" color={tintColor} size={25}/>)  
@@ -59,7 +58,7 @@ const navigator = createSwitchNavigator({
       }
     })
   }, {  
-    initialRouteName: "Main",  
+    initialRouteName: "Camera",  
     activeColor: "#ffffff",  
     inactiveColor: "#19456b",  
     barStyle: { backgroundColor: "#70af85", height: 50},
