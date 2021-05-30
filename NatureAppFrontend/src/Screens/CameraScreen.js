@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, StyleSheet, View, SafeAreaView} from 'react-native';
+import {RNCamera} from "react-native-camera";
 
-const MainScreen = function() {
+const CameraScreen = function() {
     return ( // teste
         <SafeAreaView forceInset={{top: "always"}}> 
-            <Text style={styles.textStyle}>Camera</Text>
+            
         </SafeAreaView>
     )
 }
@@ -12,8 +13,13 @@ const MainScreen = function() {
 const styles = StyleSheet.create({
     textStyle: {
         fontSize: 45
+    },
+    Camera: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
     }
 
 });
 
-export default MainScreen;
+export default CameraScreen;
