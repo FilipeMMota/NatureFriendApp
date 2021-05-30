@@ -52,7 +52,7 @@ const styles = StyleSheet.create(
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#47d397"
+            backgroundColor: "#f1f3f8"
         },
         labels: {
             marginBottom: 15,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create(
             height: 40
         },
         title: {
-            color: "#1DA730",
+            color: "#70af85",
             marginTop: -40,
             marginBottom: 40,
             fontSize: 38,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create(
             
         },
         Button: {
-            backgroundColor: "#011936",
+            backgroundColor: "#70af85",
             borderRadius: 15,
             paddingHorizontal: 15,
             borderWidth: 0,
