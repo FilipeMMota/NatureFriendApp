@@ -7,7 +7,7 @@ require("dotenv").config(); // Biblioteca para esconder informações importante
 
 const router = express.Router();
 
-router.get("/user", requireAuth, async (req, res) => { //Rota para a obtenção dos useres
+router.get("/user", requireAuth, (req, res) => { //Rota para a obtenção dos useres
     const username = req.user.user_name;
     const date = req.user.date;
     res.status(200).send({username, date})
@@ -34,12 +34,11 @@ router.post("/signup", (req, res, next) => { // Rota para a criação de um user
             await db.query(query);
 
             const token = jwt.sign({ email, username }, process.env.JWT_KEY); // Criação de um token que tem associado o emaill e o username introduzidos
-            res.send({token}); //envio do token para uso posterior nos requests
+            res.status(200).send({token}); //envio do token para uso posterior nos requests
         }catch(err){
             return res.status(422).send("Username ou email já existente"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
         }
     });
-
 });
 
 const comparePassword = function(candidatePassword, userPassword){
@@ -59,7 +58,7 @@ const comparePassword = function(candidatePassword, userPassword){
     
 }
 
-router.post("/signin", async(req, res) => {
+router.post("/signin", async (req, res) => {
     const {email, password} = req.body;
 
     try{
