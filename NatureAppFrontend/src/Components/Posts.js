@@ -7,7 +7,7 @@ const Posts = function ({PostTitle, Descrição, Data}) {
         <View style= {styles.Individual}>
             <Text style= {styles.Titulo}>{PostTitle}</Text>
             <Text style= {styles.Descricao} >{Descrição}</Text>
-            <Text style= {styles.Data}>{Data}</Text>
+            <Text style= {styles.Data}>Created on {Data}</Text>
         </View>
     )
 }
