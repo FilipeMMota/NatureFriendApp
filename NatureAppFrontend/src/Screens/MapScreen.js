@@ -6,8 +6,8 @@ import MapView from "react-native-maps";
 const MapScreen = () => {
 
     const [accessGranted, setAccessGranted] = useState(true)
-    const [latitude, setLatitude] = useState(10)
-    const [longitude, setLongitude] = useState(10)
+    const [latitude, setLatitude] = useState(38.7223)
+    const [longitude, setLongitude] = useState(9.1393)
     const startWatching = async () => {
         try{
             const {granted} = await requestForegroundPermissionsAsync();
