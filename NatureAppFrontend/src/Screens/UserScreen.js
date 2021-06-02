@@ -2,16 +2,20 @@ import React, {useContext, useEffect} from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, FlatList, Alert} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {Context as AuthContext} from "../Context/AuthContext";
+import {Context as PostsContext} from "../Context/PostsContext";
 import {AntDesign} from "@expo/vector-icons";
 import Moment from 'moment'; // Usado para formatar a data recebida da base de dados
 import Posts from '../Components/Posts';
 
 const UserScreen = function({navigation}) {
 
-    const {state, signout, fetchUser} = useContext(AuthContext);
+    const {state: authState, signout, fetchUser} = useContext(AuthContext);
+    const {state: postsState, fetchPosts} = useContext(PostsContext);
+    const posts = postsState.posts;
 
     useEffect(() => {
         fetchUser();
+        fetchPosts();
     }, []);
 
     const AlertSignOut = () =>
@@ -27,16 +31,6 @@ const UserScreen = function({navigation}) {
       ],
       { cancelable: false }
     )
-
-    const posts = [
-        { PostTitle: "Lixo na Floresta", Description: "Lixo nos pintelhos do Miguel" , Data: "Created on 29/05/2021"},
-        { PostTitle: "Lixo na Alameda", Description: "O Miguel é o lixo" , Data: "Created on 29/05/2021"},
-        { PostTitle: "Lixo em Carcavelos", Description: "Na casa do Gui" , Data: "Created on 29/05/2021"},
-        { PostTitle: "Lixo na Graça", Description: "Atão primo?!?😠" , Data: "Created on 29/05/2021"},
-        { PostTitle: "Lixo em Carnaxide", Description: "Santinho, tens conduzido?" , Data: "Created on 29/05/2021"}
-    ];
-    
-
     return (
         <View style={styles.Content}>
             <View>
@@ -50,29 +44,28 @@ const UserScreen = function({navigation}) {
                 
             </View>
 
-            <Text style= {styles.Username}>{state.username}</Text>
-            <Text style= {styles.RegisteredDate}>Registered since {Moment(state.date).format('DD MMM YYYY')}</Text>
+            <Text style= {styles.Username}>{authState.username}</Text>
+            <Text style= {styles.RegisteredDate}>Registered since {Moment(authState.date).format('DD/MM/YYYY')}</Text>
 
 
             <Text style={styles.Text}>My Posts</Text>
 
-            <View style= {styles.Posts}>
-                    
+            <View style= {styles.Posts}>   
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    keyExtractor = {posts => posts.PostTitle}
+                    keyExtractor = {posts => posts.post_title}
                     data={posts}
-                    renderItem = {( {item}) => {
-                    return (
-                        <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
-                            <Posts
-                                PostTitle = {item.PostTitle}
-                                Descrição = {item.Description}
-                                Data = {item.Data}
-                            >
-                            </Posts>
-                        </TouchableOpacity>
-                    );
+                    renderItem = {({item}) => {
+                        return (
+                            <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+                                <Posts
+                                    PostTitle = {item.post_title}
+                                    Descrição = {item.post_description}
+                                    Data = {Moment(item.post_date).format("DD/MM/YYYY")}
+                                >
+                                </Posts>
+                            </TouchableOpacity>
+                        );
                     }}
                 />
             </View>
