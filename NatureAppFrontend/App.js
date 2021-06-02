@@ -9,6 +9,7 @@ import RegisterScreen from "./src/Screens/RegisterScreen";
 import UserScreen from "./src/Screens/UserScreen";
 import PostsScreen from "./src/Screens/PostsScreen";
 import {Provider as AuthProvider} from "./src/Context/AuthContext";
+import {Provider as PostsProvider} from "./src/Context/PostsContext";
 import {navigationRef, setNavigator} from "./src/navigationRef";
 import {Entypo} from "@expo/vector-icons";
 import {FontAwesome} from "@expo/vector-icons";
@@ -69,8 +70,11 @@ const App = createAppContainer(navigator);
 
 export default () => {// Dentro do app component, que é onde contém as propriedades de navegação entre screens, estamos a chamar a funão setNavigator para receber essas propriedades 
   return(
-    <AuthProvider> 
-      <App ref={(navigator) => {setNavigator(navigator)}}/> 
-    </AuthProvider>
+    <PostsProvider>
+      <AuthProvider> 
+        <App ref={(navigator) => {setNavigator(navigator)}}/> 
+      </AuthProvider>
+    </PostsProvider>
+    
   );
 }
