@@ -1,24 +1,39 @@
-import React from 'react';
-import { Text, StyleSheet, View, SafeAreaView} from 'react-native';
-import {RNCamera} from "react-native-camera";
+import React, {useEffect, useState} from 'react';
+import { Text, StyleSheet, View} from 'react-native';
+import {Camera} from 'expo-camera';
 
 const CameraScreen = function() {
-    return ( // teste
-        <SafeAreaView forceInset={{top: "always"}}> 
-            
-        </SafeAreaView>
-    )
-}
+    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [hasPermission, setHaspermission] = useState(null);
+
+    useEffect( () => {
+        (async () => {
+            const {status} = await Camera.requestPermissionsAsync();
+            setHaspermission(status === 'granted');
+        })();
+    }, []);
+    
+    if(hasPermission === null){
+        return <View/>;
+    }
+
+    if(hasPermission === false){
+        return <Text> No acess to Camera</Text>;
+    }
+
+
+    return (
+        <View>
+            <Camera
+            type={type}
+            style={{flex:1}}
+            />       
+        </View>
+    );
+    }
+
 
 const styles = StyleSheet.create({
-    textStyle: {
-        fontSize: 45
-    },
-    Camera: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    }
 
 });
 
