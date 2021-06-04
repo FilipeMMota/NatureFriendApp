@@ -5,7 +5,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import {FontAwesome} from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NavigationEvents} from "react-navigation";
-import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
 
 const CameraScreen = function({navigation}) {
