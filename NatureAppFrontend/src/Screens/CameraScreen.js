@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Modal,
   Image,
-  Touchable,
 } from "react-native";
 import { Input } from "react-native-elements";
 import { Camera } from "expo-camera";
@@ -16,6 +15,7 @@ import {
 } from "react-native-responsive-screen";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
 import * as MediaLibrary from "expo-media-library";
 
@@ -24,6 +24,7 @@ const CameraScreen = function ({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [hasPermission, setHaspermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [open, setOpen] = useState(false);
@@ -74,7 +75,12 @@ const CameraScreen = function ({ navigation }) {
         onWillBlur={() => setIsFocused(navigation.isFocused())}
       />
       {isFocused && (
-        <Camera type={type} style={styles.camera} ref={camRef}>
+        <Camera
+          flashMode={flash}
+          type={type}
+          style={styles.camera}
+          ref={camRef}
+        >
           <View
             style={{
               flex: 1,
@@ -97,6 +103,25 @@ const CameraScreen = function ({ navigation }) {
                   name="flip-camera-ios"
                   size={40}
                   color="#FFFFFF"
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.flipCamera}
+                onPress={() => {
+                  setFlash(
+                    flash === Camera.Constants.FlashMode.off
+                      ? Camera.Constants.FlashMode.on
+                      : Camera.Constants.FlashMode.off
+                  );
+                }}
+              >
+                <Feather
+                  name={
+                    flash === Camera.Constants.FlashMode.on ? "zap" : "zap-off"
+                  }
+                  size={24}
+                  color="black"
                 />
               </TouchableOpacity>
             </View>
