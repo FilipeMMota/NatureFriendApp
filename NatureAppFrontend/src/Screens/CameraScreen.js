@@ -95,7 +95,7 @@ const CameraScreen = function() {
 const styles = StyleSheet.create({
     camera:{
         height: hp("100%"),
-        width: wp("100%")
+        width: wp("130%")
     
     
     },
