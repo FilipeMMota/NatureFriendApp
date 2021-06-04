@@ -41,33 +41,37 @@ const CameraScreen = function({navigation}) {
     return (
         <View>
             <NavigationEvents onWillFocus={() => setIsFocused(navigation.isFocused())} onWillBlur={() => setIsFocused(navigation.isFocused())}/>
-            {isFocused && 
-            <Camera
-                type={type}
-                style={styles.camera}
-                ref={camRef}
-            >
-                <View style={{ flex:1, backgroundColor: 'transparent' }}>
-                    <TouchableOpacity 
-                        style={styles.flipCamera}
-                        onPress={ () =>{
-                            setType(
-                                type === Camera.Constants.Type.back
-                                ? Camera.Constants.Type.front
-                                : Camera.Constants.Type.back
-                            );
-                        }}
-                    > 
-                        <MaterialIcons name="flip-camera-ios" size={45} color="#FFFFFF" />
-                    </TouchableOpacity>
+            {isFocused &&
+                <Camera
+                    type={type}
+                    style={styles.camera}
+                    ref={camRef}
+                >
+                    <View style={{ flex: 1, backgroundColor: 'transparent'}}>
+                        <View style={{flex: 1, justifyContent: "flex-start"}}>
+                            <TouchableOpacity 
+                                style={styles.flipCamera}
+                                onPress={ () =>{
+                                    setType(
+                                        type === Camera.Constants.Type.back
+                                        ? Camera.Constants.Type.front
+                                        : Camera.Constants.Type.back
+                                    );
+                                }}
+                            > 
+                                <MaterialIcons name="flip-camera-ios" size={45} color="#FFFFFF" />
+                            </TouchableOpacity>
+                        </View>
+                        
+                        <View style={{flex: 1, justifyContent: "flex-end"}}>
+                            <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
+                                <FontAwesome  name="camera" size={23} color="#FFFFFF" />
+                            </TouchableOpacity>
+                        </View>
 
-                </View>
-                
-                    <TouchableOpacity style={styles.cameraButton} onPress={takePicture}>
-                        <FontAwesome  name="camera" size={23} color="#FFF" />
-                    </TouchableOpacity>
-                
-            </Camera> }
+                    </View>
+                </Camera>
+            }
                 
             { capturedPhoto &&
                 <Modal
@@ -93,21 +97,27 @@ const CameraScreen = function({navigation}) {
 
 
 const styles = StyleSheet.create({
+    
+    container: {
+        flex: 1
+    },
     camera:{
         height: hp("100%"),
         width: wp("100%")
     },
     cameraButton:{
         backgroundColor: '#19456b',
-        marginBottom: 100,
         justifyContent:'center',
         alignItems:'center',
+        marginBottom: hp("9%"),
         height:50,
         borderRadius: 10,
         marginHorizontal: 25
+
     },
     flipCamera:{
         alignItems: 'flex-end',
+        justifyContent: "flex-start",
         padding: 35      
     },
     closeModal:{
