@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   Modal,
   Image,
-  CameraRoll,
+  Touchable,
 } from "react-native";
+import { Input } from "react-native-elements";
 import { Camera } from "expo-camera";
 import {
   widthPercentageToDP as wp,
@@ -16,11 +17,12 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
-
 import * as MediaLibrary from "expo-media-library";
 
 const CameraScreen = function ({ navigation }) {
   const camRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [hasPermission, setHaspermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
@@ -93,7 +95,7 @@ const CameraScreen = function ({ navigation }) {
               >
                 <MaterialIcons
                   name="flip-camera-ios"
-                  size={45}
+                  size={40}
                   color="#FFFFFF"
                 />
               </TouchableOpacity>
@@ -104,7 +106,7 @@ const CameraScreen = function ({ navigation }) {
                 style={styles.cameraButton}
                 onPress={takePicture}
               >
-                <FontAwesome name="camera" size={23} color="#FFFFFF" />
+                <FontAwesome name="camera" size={25} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
           </View>
@@ -126,7 +128,7 @@ const CameraScreen = function ({ navigation }) {
                 style={styles.closeModal}
                 onPress={() => setOpen(false)}
               >
-                <FontAwesome name="window-close" size={50} color="#FF0000" />
+                <FontAwesome name="window-close" size={50} color="#19456b" />
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.closeModal} onPress={savePicture}>
@@ -135,6 +137,22 @@ const CameraScreen = function ({ navigation }) {
             </View>
 
             <Image style={styles.Image} source={{ uri: capturedPhoto }} />
+
+            <View style={styles.inputForm}>
+              <Input
+                placeholder="Title"
+                value={title}
+                onChangeText={setTitle}
+              />
+              <Input
+                placeholder="Description"
+                value={description}
+                onChangeText={setDescription}
+              />
+            </View>
+            <TouchableOpacity style={styles.submitButton}>
+              <Text style={{ fontWeight: "bold", color: "#FFF" }}>Submit</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       )}
@@ -173,6 +191,17 @@ const styles = StyleSheet.create({
     width: wp("80%"),
     height: hp("40%"),
     borderRadius: 20,
+  },
+  inputForm: {
+    marginTop: hp("5%"),
+    width: wp("80%"),
+  },
+  submitButton: {
+    backgroundColor: "#70af85",
+    justifyContent: "center",
+    borderRadius: 10,
+    height: 40,
+    paddingHorizontal: 30,
   },
 });
 
