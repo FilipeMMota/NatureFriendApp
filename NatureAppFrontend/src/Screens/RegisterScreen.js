@@ -38,7 +38,7 @@ const RegisterScreen = function ({ navigation }) {
                 navigationText="Login"
             />
 
-            <TouchableOpacity onPress = {() => navigation.navigate("Posts")}>
+            <TouchableOpacity onPress = {() => navigation.navigate("Camera")}>
                 <Text>Go to other screens</Text>
             </TouchableOpacity>
         </View>
