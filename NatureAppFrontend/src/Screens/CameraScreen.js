@@ -1,10 +1,12 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Modal, Image} from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, Modal, Image, CameraRoll} from 'react-native';
 import {Camera} from 'expo-camera';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {FontAwesome} from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NavigationEvents} from "react-navigation";
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
 
 const CameraScreen = function({navigation}) {
     const camRef = useRef(null);
@@ -17,6 +19,12 @@ const CameraScreen = function({navigation}) {
     useEffect( () => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
+            setHaspermission(status === 'granted');
+        })();
+    
+        
+        (async () => {
+            const {status} = await MediaLibrary.requestPermissionsAsync();
             setHaspermission(status === 'granted');
         })();
     }, []);
@@ -35,6 +43,16 @@ const CameraScreen = function({navigation}) {
             setCapturedPhoto(data.uri);
             setOpen(true);
         }
+    }
+
+    async function savePicture() {
+        const asset = await MediaLibrary.createAssetAsync(capturedPhoto)
+        .then(()=> {
+            alert('Picture Saved!')
+        })
+        .catch(error =>{
+            console.log('err,error');
+        })
     }
 
 
@@ -80,9 +98,16 @@ const CameraScreen = function({navigation}) {
                 visible={open}
                 >
                     <View style={{flex: 1,  justifyContent: 'center', alignItems: 'center', margin: 20 }}>
+                        
+                        <View style = {{margin: 10, flexDirection: 'row'}}>
                         <TouchableOpacity style={styles.closeModal} onPress={ () => setOpen(false)}>
                             <FontAwesome name="window-close" size={50} color="#FF0000" />
                         </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.closeModal} onPress={savePicture}>
+                            <FontAwesome name="upload" size={50} color="#121212" />
+                        </TouchableOpacity>
+                        </View>
 
                         <Image
                         style={styles.Image}
