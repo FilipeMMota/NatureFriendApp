@@ -1,26 +1,21 @@
 import React, {useState, useContext, useEffect} from "react";
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, useWindowDimensions } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
 import {NavigationEvents} from "react-navigation";
 import AuthNavigation from "../Components/AuthNavigation";
 import {Context as AuthContext} from "../Context/AuthContext";
 
 const RegisterScreen = function ({ navigation }) {
 
-    const {state, signup, clearErrorMessage, checkAuthentication} = useContext(AuthContext);
+    const {state, signup, clearErrorMessage} = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [retypedPassword, setRetypedPassword] = useState("");
 
-    useEffect(() => {
-        checkAuthentication();
-    }, []);
-
     return (
         <View style={styles.Content}>
             <NavigationEvents onWillFocus={clearErrorMessage} onWillBlur={clearErrorMessage}/>
-            <Image style={styles.icon} source={require('../../assets/IconNature.png')} />
-            <Text style={styles.title}>Nature Friend</Text>
+            <Image style={styles.icon} source={require('../../assets/NatureFriendLogo.png')} />
 
             <TextInput style={styles.labels} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" autoCorrect={false}/>
             <TextInput style={styles.labels} placeholder="Username" value={username} onChangeText={setUsername} autoCapitalize="none" autoCorrect={false}/>
@@ -74,8 +69,8 @@ const styles = StyleSheet.create(
 
         },
         icon:{
-            height: 250,
-            width: 200
+            height: 230,
+            width: 350
             
         },
         Button: {

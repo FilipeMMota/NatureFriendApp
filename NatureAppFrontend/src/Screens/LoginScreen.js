@@ -10,8 +10,7 @@ const LoginScreen = function () {
 
     return (
         <View style={styles.Content}>
-            <Image style={styles.icon} source={require('../../assets/IconNature.png')} />
-            <Text style={styles.title}>Nature Friend</Text>
+            <Image style={styles.icon} source={require('../../assets/NatureFriendLogo.png')} />
 
             <TextInput style={styles.labels} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" autoCorrect={false}/>
             <TextInput secureTextEntry style={styles.labels} placeholder="Password" value={password} onChangeText={setPassword} autoCapitalize="none" autoCorrect={false}/>
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     },
     icon:{
         height: 250,
-        width: 200
+        width: 350
         
     },
     Button: {
