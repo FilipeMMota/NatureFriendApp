@@ -47,7 +47,7 @@ const CameraScreen = function({navigation}) {
                     style={styles.camera}
                     ref={camRef}
                 >
-                    <View style={{ flex: 1, backgroundColor: 'transparent'}}>
+                    <View style={{ flex: 1, position: "relative",backgroundColor: 'transparent'}}>
                         <View style={{flex: 1, justifyContent: "flex-start"}}>
                             <TouchableOpacity 
                                 style={styles.flipCamera}
@@ -72,7 +72,7 @@ const CameraScreen = function({navigation}) {
                     </View>
                 </Camera>
             }
-                
+
             { capturedPhoto &&
                 <Modal
                 animationType="slide"
@@ -103,13 +103,14 @@ const styles = StyleSheet.create({
     },
     camera:{
         height: hp("100%"),
-        width: wp("100%")
+        width: wp("130%")
     },
     cameraButton:{
         backgroundColor: '#19456b',
         justifyContent:'center',
         alignItems:'center',
         marginBottom: hp("9%"),
+        marginRight: wp("37.5%"),
         height:50,
         borderRadius: 10,
         marginHorizontal: 25
@@ -118,7 +119,8 @@ const styles = StyleSheet.create({
     flipCamera:{
         alignItems: 'flex-end',
         justifyContent: "flex-start",
-        padding: 35      
+        padding: 35,
+        marginRight: wp("25%")        
     },
     closeModal:{
         margin: 10
