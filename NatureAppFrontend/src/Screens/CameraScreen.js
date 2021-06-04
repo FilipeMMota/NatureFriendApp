@@ -5,6 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import {FontAwesome} from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NavigationEvents} from "react-navigation";
+
 import * as MediaLibrary from 'expo-media-library';
 
 const CameraScreen = function({navigation}) {
@@ -64,7 +65,7 @@ const CameraScreen = function({navigation}) {
                     style={styles.camera}
                     ref={camRef}
                 >
-                    <View style={{ flex: 1, position: "relative",backgroundColor: 'transparent'}}>
+                    <View style={{ flex: 1, position:'relative', backgroundColor: 'transparent'}}>
                         <View style={{flex: 1, justifyContent: "flex-start"}}>
                             <TouchableOpacity 
                                 style={styles.flipCamera}
@@ -89,7 +90,7 @@ const CameraScreen = function({navigation}) {
                     </View>
                 </Camera>
             }
-
+                
             { capturedPhoto &&
                 <Modal
                 animationType="slide"
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: "flex-start",
         padding: 35,
-        marginRight: wp("25%")        
+        marginRight: wp("25%")   
     },
     closeModal:{
         margin: 10
