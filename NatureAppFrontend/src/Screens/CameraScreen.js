@@ -6,7 +6,7 @@ import {FontAwesome} from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import {NavigationEvents} from "react-navigation";
 
-const CameraScreen = function() {
+const CameraScreen = function({navigation}) {
     const camRef = useRef(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [hasPermission, setHaspermission] = useState(null);
@@ -95,24 +95,20 @@ const CameraScreen = function() {
 const styles = StyleSheet.create({
     camera:{
         height: hp("100%"),
-        width: wp("130%")
-    
-    
+        width: wp("100%")
     },
     cameraButton:{
         backgroundColor: '#19456b',
-         marginBottom: 100,
-          justifyContent:'center',
-          alignItems:'center',
-          height:50,
-          borderRadius: 10,
-          marginHorizontal: 25
-     
+        marginBottom: 100,
+        justifyContent:'center',
+        alignItems:'center',
+        height:50,
+        borderRadius: 10,
+        marginHorizontal: 25
     },
     flipCamera:{
         alignItems: 'flex-end',
-        padding: 35
-        
+        padding: 35      
     },
     closeModal:{
         margin: 10
@@ -120,12 +116,8 @@ const styles = StyleSheet.create({
     Image:{
         width:wp("80%"),
         height:hp("40%"),
-        borderRadius: 20
-        
+        borderRadius: 20 
     }
-
-
-
 });
 
 export default CameraScreen;
