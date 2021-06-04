@@ -2,6 +2,7 @@ import React from "react";
 import { createAppContainer, createSwitchNavigator} from "react-navigation";
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator} from "react-navigation-stack";
+import LoadingScreen from "./src/Screens/LoadingScreen";
 import LoginScreen from "./src/Screens/LoginScreen";
 import CameraScreen from "./src/Screens/CameraScreen";
 import MapScreen from "./src/Screens/MapScreen";
@@ -19,6 +20,12 @@ import {FontAwesome5} from "@expo/vector-icons";
 
 
 const navigator = createSwitchNavigator({
+  Loading: {
+    screen: LoadingScreen,
+    navigationOptions:{
+      headerShown: false,
+    }
+  },
   Register: {
     screen: RegisterScreen,
     navigationOptions:{
