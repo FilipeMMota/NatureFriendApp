@@ -6,7 +6,13 @@ import {
   TouchableOpacity,
   Modal,
   Image,
+  Alert,
 } from "react-native";
+import {
+  Accuracy,
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
 import { Input } from "react-native-elements";
 import { Camera } from "expo-camera";
 import {
@@ -21,8 +27,11 @@ import * as MediaLibrary from "expo-media-library";
 
 const CameraScreen = function ({ navigation }) {
   const camRef = useRef(null);
+  const [accessGranted, setAccessGranted] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [latitude, setLatitude] = useState(38.7223);
+  const [longitude, setLongitude] = useState(9.1393);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [hasPermission, setHaspermission] = useState(null);
@@ -30,14 +39,48 @@ const CameraScreen = function ({ navigation }) {
   const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
 
+  // const startWatching = async () => {
+  //   try {
+  //     const { granted } = await requestForegroundPermissionsAsync(); // Tenta dar destructure mas dar um nome diferente à variavel
+  //     console.log(granted);
+  //     if (!granted) {
+  //       setAccessGranted(false);
+  //       AlertForLocation();
+  //       console.log("chegou");
+  //     } else {
+  //       setAccessGranted(true);
+  //       const location = await getCurrentPositionAsync({
+  //         accuracy: Accuracy.BestForNavigation,
+  //       });
+  //       setLatitude(location.coords.latitude);
+  //       setLongitude(location.coords.longitude);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  // const AlertForLocation = () =>
+  //   Alert.alert(
+  //     "Need location premission",
+  //     "This application needs the permission to use your location, Please enable the location",
+  //     [{ text: "Ok", onPress: () => startWatching() }],
+  //     { cancelable: false }
+  //   );
+
   useEffect(() => {
+    //startWatching();
+
     (async () => {
+      // não está completamente a funcionar
       const { status } = await Camera.requestPermissionsAsync();
+      console.log(status);
       setHaspermission(status === "granted");
     })();
 
     (async () => {
       const { status } = await MediaLibrary.requestPermissionsAsync();
+      console.log(status);
       setHaspermission(status === "granted");
     })();
   }, []);
@@ -107,7 +150,7 @@ const CameraScreen = function ({ navigation }) {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.flipCamera}
+                style={styles.flash}
                 onPress={() => {
                   setFlash(
                     flash === Camera.Constants.FlashMode.off
@@ -208,6 +251,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     padding: 35,
     marginRight: wp("25%"),
+  },
+  flash: {
+    alignItems: "flex-end",
   },
   closeModal: {
     margin: 10,
