@@ -29,14 +29,14 @@ const UserScreen = function ({ navigation }) {
 
   const AlertSignOut = () =>
     Alert.alert(
-      "Sign Out",
-      "Are you sure you want to sign out?",
+      "Sair",
+      "Tem a certeza que pretende sair?",
       [
         {
-          text: "Cancel",
+          text: "Cancelar",
           style: "cancel",
         },
-        { text: "Yes", onPress: () => signout() },
+        { text: "Sim", onPress: () => signout() },
       ],
       { cancelable: false }
     );
@@ -54,10 +54,10 @@ const UserScreen = function ({ navigation }) {
 
       <Text style={styles.Username}>{authState.username}</Text>
       <Text style={styles.RegisteredDate}>
-        Registered since {Moment(authState.date).format("DD/MM/YYYY")}
+        Registado desde {Moment(authState.date).format("DD/MM/YYYY")}
       </Text>
 
-      <Text style={styles.Text}>My Posts</Text>
+      <Text style={styles.Text}>Os meus posts</Text>
 
       <View style={styles.Posts}>
         <FlatList
@@ -78,7 +78,7 @@ const UserScreen = function ({ navigation }) {
         />
       </View>
       <TouchableOpacity style={styles.SignOut} onPress={() => AlertSignOut()}>
-        <Text style={styles.TextSignOut}>Sign Out</Text>
+        <Text style={styles.TextSignOut}>Sair</Text>
       </TouchableOpacity>
     </View>
   );
@@ -110,11 +110,10 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   Text: {
-    fontSize: hp("3.7%"),
+    fontSize: hp("3.5%"),
     marginTop: hp("3%"),
     alignSelf: "flex-start",
     paddingLeft: wp("15%"),
-    fontWeight: "bold",
   },
   Posts: {
     width: wp("80%"),
