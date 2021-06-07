@@ -27,7 +27,6 @@ import * as MediaLibrary from "expo-media-library";
 
 const CameraScreen = function ({ navigation }) {
   const camRef = useRef(null);
-  const [accessGranted, setAccessGranted] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [latitude, setLatitude] = useState(38.7223);
@@ -39,50 +38,54 @@ const CameraScreen = function ({ navigation }) {
   const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
 
-  // const startWatching = async () => {
-  //   try {
-  //     const { granted } = await requestForegroundPermissionsAsync(); // Tenta dar destructure mas dar um nome diferente à variavel
-  //     console.log(granted);
-  //     if (!granted) {
-  //       setAccessGranted(false);
-  //       AlertForLocation();
-  //       console.log("chegou");
-  //     } else {
-  //       setAccessGranted(true);
-  //       const location = await getCurrentPositionAsync({
-  //         accuracy: Accuracy.BestForNavigation,
-  //       });
-  //       setLatitude(location.coords.latitude);
-  //       setLongitude(location.coords.longitude);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  const getPermissions = async () => {
+    try {
+      const { granted: isGranted } = await requestForegroundPermissionsAsync(); // Tenta dar destructure mas dar um nome diferente à variavel
+      if (!isGranted) {
+        AlertForLocation();
+      } else {
+        const { status: cameraStatus } = await Camera.requestPermissionsAsync();
+        setHaspermission(cameraStatus === "granted");
+        if (cameraStatus != "granted") {
+          AlertForCameraAndGalery();
+        } else {
+          const { status: libraryStatus } =
+            await MediaLibrary.requestPermissionsAsync();
+          setHaspermission(libraryStatus === "granted");
+          if (libraryStatus != "granted") {
+            AlertForCameraAndGalery();
+          } else {
+            const location = await getCurrentPositionAsync({
+              accuracy: Accuracy.BestForNavigation,
+            });
+            setLatitude(location.coords.latitude);
+            setLongitude(location.coords.longitude);
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  // const AlertForLocation = () =>
-  //   Alert.alert(
-  //     "Need location premission",
-  //     "This application needs the permission to use your location, Please enable the location",
-  //     [{ text: "Ok", onPress: () => startWatching() }],
-  //     { cancelable: false }
-  //   );
+  const AlertForLocation = () =>
+    Alert.alert(
+      "Permissão da localização recusada!",
+      "Esta aplicação necessita da sua permissão para aceder à sua localização para poder funcionar, Por favor dê autorização para poder continuar.",
+      [{ text: "Ok", onPress: () => getPermissions() }],
+      { cancelable: false }
+    );
+
+  const AlertForCameraAndGalery = () =>
+    Alert.alert(
+      "Permissão da camera recusada!",
+      "Esta aplicação necessita da sua permissão para aceder à sua camera e à sua galeria para poder funcionar, Por favor dê autorização para poder continuar.",
+      [{ text: "Ok", onPress: () => getPermissions() }],
+      { cancelable: false }
+    );
 
   useEffect(() => {
-    //startWatching();
-
-    (async () => {
-      // não está completamente a funcionar
-      const { status } = await Camera.requestPermissionsAsync();
-      console.log(status);
-      setHaspermission(status === "granted");
-    })();
-
-    (async () => {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      console.log(status);
-      setHaspermission(status === "granted");
-    })();
+    getPermissions();
   }, []);
 
   if (hasPermission === null) {

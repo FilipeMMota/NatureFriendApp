@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Alert } from "react-native";
-import {
-  Accuracy,
-  requestForegroundPermissionsAsync,
-  getCurrentPositionAsync,
-} from "expo-location";
+import { Accuracy, getCurrentPositionAsync } from "expo-location";
 import MapView from "react-native-maps";
 
 const MapScreen = () => {
-  const [accessGranted, setAccessGranted] = useState(true);
   const [latitude, setLatitude] = useState(38.7223);
   const [longitude, setLongitude] = useState(9.1393);
-  const startWatching = async () => {
+
+  const getCurrentPosition = async () => {
     try {
-      const { granted } = await requestForegroundPermissionsAsync();
-      if (!granted) {
-        setAccessGranted(false);
-      }
-      setAccessGranted(true);
       const location = await getCurrentPositionAsync({
         accuracy: Accuracy.BestForNavigation,
       });
@@ -26,22 +17,9 @@ const MapScreen = () => {
     } catch (e) {}
   };
 
-  const AlertForLocation = () =>
-    Alert.alert(
-      "Need location premission",
-      "This application needs the permission to use your location, Please enable the location",
-      [{ text: "Ok", onPress: () => startWatching() }],
-      { cancelable: false }
-    );
-
   useEffect(() => {
-    startWatching();
+    getCurrentPosition();
   }, []);
-
-  if (!accessGranted) {
-    AlertForLocation();
-    return <View></View>;
-  }
 
   return (
     <View style={{ flex: 1 }}>
