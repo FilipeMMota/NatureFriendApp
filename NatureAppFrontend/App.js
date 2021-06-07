@@ -40,7 +40,7 @@ const navigator = createSwitchNavigator({
       Camera: {
         screen: CameraScreen,
         navigationOptions: {
-          tabBarLabel: "Camera",
+          tabBarLabel: "Câmera",
           tabBarIcon: ({ tintColor }) => (
             <Entypo name="camera" color={tintColor} size={25} />
           ),
@@ -49,7 +49,7 @@ const navigator = createSwitchNavigator({
       Map: {
         screen: MapScreen,
         navigationOptions: {
-          tabBarLabel: "Map",
+          tabBarLabel: "Mapa",
           tabBarIcon: ({ tintColor }) => (
             <FontAwesome5 name="map-marker-alt" color={tintColor} size={25} />
           ),
@@ -67,7 +67,7 @@ const navigator = createSwitchNavigator({
         },
         {
           navigationOptions: {
-            tabBarLabel: "User",
+            tabBarLabel: "Utilizador",
             tabBarIcon: ({ tintColor }) => (
               <FontAwesome name="user" color={tintColor} size={25} />
             ),
