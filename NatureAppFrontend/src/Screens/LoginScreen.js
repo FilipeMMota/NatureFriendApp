@@ -51,7 +51,7 @@ const LoginScreen = function () {
         <Text style={styles.Text}>Login</Text>
       </TouchableOpacity>
 
-      <AuthNavigation textLink="Create Account" navigationText="Register" />
+      <AuthNavigation textLink="Criar Conta" navigationText="Register" />
     </View>
   );
 };
