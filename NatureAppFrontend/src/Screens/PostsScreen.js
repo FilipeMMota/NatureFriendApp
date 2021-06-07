@@ -12,15 +12,15 @@ const PostsScreen = function () {
     <View style={styles.Content}>
       <View>
         <Text style={styles.Titulo}>Lixo na floresta</Text>
-        <Text style={styles.Data}>Created on 27/05/2021</Text>
-        <Text style={styles.Description}>Description</Text>
+        <Text style={styles.Data}>Criado a 27/05/2021</Text>
+        <Text style={styles.Description}>Descrição</Text>
         <TextInput style={styles.DescriptionField} />
       </View>
       <TouchableOpacity
         style={styles.SolvedButton}
         onPress={() => console.log("Ta resolvido")}
       >
-        <Text style={styles.Text}>Solved Issue!</Text>
+        <Text style={styles.Text}>Problema resolvido!</Text>
       </TouchableOpacity>
     </View>
   );
