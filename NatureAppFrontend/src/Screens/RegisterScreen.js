@@ -39,7 +39,7 @@ const RegisterScreen = function ({ navigation }) {
       />
       <TextInput
         style={styles.labels}
-        placeholder="Username"
+        placeholder="Utilizador"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
@@ -57,7 +57,7 @@ const RegisterScreen = function ({ navigation }) {
       <TextInput
         secureTextEntry
         style={styles.labels}
-        placeholder="Confirm Password"
+        placeholder="Confirmar Password"
         value={retypedPassword}
         onChangeText={setRetypedPassword}
         autoCapitalize="none"
@@ -72,16 +72,13 @@ const RegisterScreen = function ({ navigation }) {
         style={styles.Button}
         onPress={() => signup({ email, username, password, retypedPassword })}
       >
-        <Text style={styles.Text}>Register</Text>
+        <Text style={styles.Text}>Registar</Text>
       </TouchableOpacity>
 
-      <AuthNavigation
-        textLink="Already have an Account?"
-        navigationText="Login"
-      />
+      <AuthNavigation textLink="Já possui conta?" navigationText="Login" />
 
       <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-        <Text>Go to other screens</Text>
+        <Text>Ir para outros ecrans</Text>
       </TouchableOpacity>
     </View>
   );
