@@ -22,6 +22,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
 import * as MediaLibrary from "expo-media-library";
 
@@ -71,7 +72,7 @@ const CameraScreen = function ({ navigation }) {
   const AlertForLocation = () =>
     Alert.alert(
       "Permissão da localização recusada!",
-      "Esta aplicação necessita da sua permissão para aceder à sua localização para poder funcionar, Por favor dê autorização para poder continuar.",
+      "Esta aplicação necessita da sua permissão para aceder à sua localização para poder funcionar. Por favor ative estas funcionalidades.",
       [{ text: "Ok", onPress: () => getPermissions() }],
       { cancelable: false }
     );
@@ -79,7 +80,7 @@ const CameraScreen = function ({ navigation }) {
   const AlertForCameraAndGalery = () =>
     Alert.alert(
       "Permissão da camera recusada!",
-      "Esta aplicação necessita da sua permissão para aceder à sua camera e à sua galeria para poder funcionar, Por favor dê autorização para poder continuar.",
+      "Esta aplicação necessita da sua permissão para aceder à sua camera e à sua galeria para poder funcionar. Por favor ative estas funcionalidades.",
       [{ text: "Ok", onPress: () => getPermissions() }],
       { cancelable: false }
     );
@@ -93,7 +94,7 @@ const CameraScreen = function ({ navigation }) {
   }
 
   if (hasPermission === false) {
-    return <Text> No acess to Camera</Text>;
+    return <Text> Sem acesso à câmera</Text>;
   }
 
   async function takePicture() {
@@ -166,7 +167,7 @@ const CameraScreen = function ({ navigation }) {
                   name={
                     flash === Camera.Constants.FlashMode.on ? "zap" : "zap-off"
                   }
-                  size={24}
+                  size={35}
                   color="black"
                 />
               </TouchableOpacity>
@@ -194,35 +195,38 @@ const CameraScreen = function ({ navigation }) {
               margin: 20,
             }}
           >
-            <View style={{ margin: 10, flexDirection: "row" }}>
-              <TouchableOpacity
-                style={styles.closeModal}
-                onPress={() => setOpen(false)}
-              >
-                <FontAwesome name="window-close" size={50} color="#19456b" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.closeModal} onPress={savePicture}>
-                <FontAwesome name="upload" size={50} color="#121212" />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.exitPostSubmit}
+              onPress={() => setOpen(false)}
+            >
+              <AntDesign name="arrowleft" size={40} color="#19456b" />
+            </TouchableOpacity>
 
             <Image style={styles.Image} source={{ uri: capturedPhoto }} />
 
+            <TouchableOpacity
+              style={styles.savePostSubmit}
+              onPress={savePicture}
+            >
+              <FontAwesome name="save" size={40} color="#FFFFFF" />
+            </TouchableOpacity>
+
             <View style={styles.inputForm}>
               <Input
-                placeholder="Title"
+                placeholder="Título"
                 value={title}
                 onChangeText={setTitle}
               />
               <Input
-                placeholder="Description"
+                placeholder="Descrição"
                 value={description}
                 onChangeText={setDescription}
               />
             </View>
             <TouchableOpacity style={styles.submitButton}>
-              <Text style={{ fontWeight: "bold", color: "#FFF" }}>Submit</Text>
+              <Text style={{ fontWeight: "bold", color: "#FFF" }}>
+                Submeter
+              </Text>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -252,19 +256,20 @@ const styles = StyleSheet.create({
   flipCamera: {
     alignItems: "flex-end",
     justifyContent: "flex-start",
-    padding: 35,
+    paddingRight: 35,
+    paddingTop: 30,
     marginRight: wp("25%"),
   },
   flash: {
     alignItems: "flex-end",
-  },
-  closeModal: {
-    margin: 10,
+    justifyContent: "flex-start",
+    marginRight: wp("35%"),
+    marginTop: 15,
   },
   Image: {
     width: wp("80%"),
     height: hp("40%"),
-    borderRadius: 20,
+    borderRadius: 10,
   },
   inputForm: {
     marginTop: hp("5%"),
@@ -276,6 +281,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 40,
     paddingHorizontal: 30,
+  },
+  exitPostSubmit: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  savePostSubmit: {
+    position: "absolute",
+    top: 305,
+    right: 25,
   },
 });
 
