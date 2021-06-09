@@ -33,7 +33,7 @@ router.post("/posts", requireAuth, async (req, res) => {
       return date + "-" + month + "-" + year;
     };
 
-    const query = `INSERT INTO posts (user_id, post_img, post_title, post_description, post_lat ,post_lon, post_date) VALUES (${id}, '${image}', '${title}', '${description}', '${latitude}', '${longitude}', '${getCurrentDate()}')`;
+    const query = `INSERT INTO posts (user_id, post_img, post_title, post_description, post_lat , post_lng, post_date) VALUES (${id}, '${image}', '${title}', '${description}', '${latitude}', '${longitude}', '${getCurrentDate()}')`;
     await db.query(query);
   } catch (err) {
     return console.log(err); //res.status(422).send("Algo correu mal"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
