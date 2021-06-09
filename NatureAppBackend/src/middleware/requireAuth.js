@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
     }
 
     const { email } = payload; // Recolha do email a que o token se refere
-    const query = `SELECT user_name, user_email, date FROM users WHERE user_email = '${email}'`; // Recolha dos dados do utilizador através do email
+    const query = `SELECT user_id, user_name, user_email, date FROM users WHERE user_email = '${email}'`; // Recolha dos dados do utilizador através do email
     const result = await db.query(query);
 
     const resultToString = JSON.stringify(result.rows[0]); // Preparação dos dados para poderem ser lidos
