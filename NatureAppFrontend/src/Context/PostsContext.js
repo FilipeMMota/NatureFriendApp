@@ -25,8 +25,33 @@ const fetchPosts = (dispatch) => {
   };
 };
 
+const createPost = (dispatch) => {
+  return async ({
+    capturedPhoto: image,
+    title,
+    description,
+    latitude,
+    longitude,
+  }) => {
+    const token = await AsyncStorage.getItem("token");
+    await axios({
+      method: "post",
+      url: "http://192.168.1.157:5000/posts",
+      headers: { Authorization: `Bearer$${token}` },
+      data: {
+        image,
+        title,
+        description,
+        latitude,
+        longitude,
+      },
+    });
+    navigate("Map");
+  };
+};
+
 export const { Provider, Context } = DataContext(
   postsReducer,
-  { fetchPosts },
+  { fetchPosts, createPost },
   { posts: [] }
 );
