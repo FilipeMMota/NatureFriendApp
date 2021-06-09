@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import {
   Text,
   StyleSheet,
@@ -8,11 +8,8 @@ import {
   Image,
   Alert,
 } from "react-native";
-import {
-  Accuracy,
-  requestForegroundPermissionsAsync,
-  getCurrentPositionAsync,
-} from "expo-location";
+import { Accuracy, requestForegroundPermissionsAsync } from "expo-location";
+import * as Location from "expo-location";
 import { Input } from "react-native-elements";
 import { Camera } from "expo-camera";
 import {
@@ -25,19 +22,22 @@ import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
 import * as MediaLibrary from "expo-media-library";
+import { Context as PostsContext } from "../Context/PostsContext";
 
 const CameraScreen = function ({ navigation }) {
   const camRef = useRef(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [latitude, setLatitude] = useState(38.7223);
-  const [longitude, setLongitude] = useState(9.1393);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [hasPermission, setHaspermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [open, setOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
+
+  const { createPost } = useContext(PostsContext);
 
   const getPermissions = async () => {
     try {
@@ -55,12 +55,6 @@ const CameraScreen = function ({ navigation }) {
           setHaspermission(libraryStatus === "granted");
           if (libraryStatus != "granted") {
             AlertForCameraAndGalery();
-          } else {
-            const location = await getCurrentPositionAsync({
-              accuracy: Accuracy.BestForNavigation,
-            });
-            setLatitude(location.coords.latitude);
-            setLongitude(location.coords.longitude);
           }
         }
       }
@@ -102,6 +96,11 @@ const CameraScreen = function ({ navigation }) {
       const data = await camRef.current.takePictureAsync();
       setCapturedPhoto(data.uri);
       setOpen(true);
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Accuracy.BestForNavigation,
+      });
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
     }
   }
 
@@ -197,7 +196,11 @@ const CameraScreen = function ({ navigation }) {
           >
             <TouchableOpacity
               style={styles.exitPostSubmit}
-              onPress={() => setOpen(false)}
+              onPress={() => {
+                setOpen(false);
+                setTitle("");
+                setDescription("");
+              }}
             >
               <AntDesign name="arrowleft" size={40} color="#19456b" />
             </TouchableOpacity>
@@ -223,7 +226,18 @@ const CameraScreen = function ({ navigation }) {
                 onChangeText={setDescription}
               />
             </View>
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() =>
+                createPost({
+                  capturedPhoto,
+                  title,
+                  description,
+                  latitude,
+                  longitude,
+                })
+              }
+            >
               <Text style={{ fontWeight: "bold", color: "#FFF" }}>
                 Submeter
               </Text>
