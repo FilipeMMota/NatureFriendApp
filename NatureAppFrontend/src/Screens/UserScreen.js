@@ -14,6 +14,7 @@ import {
 import { Context as AuthContext } from "../Context/AuthContext";
 import { Context as PostsContext } from "../Context/PostsContext";
 import { AntDesign } from "@expo/vector-icons";
+import { NavigationEvents } from "react-navigation";
 import Moment from "moment"; // Usado para formatar a data recebida da base de dados
 import Posts from "../Components/Posts";
 
@@ -24,7 +25,6 @@ const UserScreen = function ({ navigation }) {
 
   useEffect(() => {
     fetchUser();
-    fetchPosts();
   }, []);
 
   const AlertSignOut = () =>
@@ -42,6 +42,7 @@ const UserScreen = function ({ navigation }) {
     );
   return (
     <View style={styles.Content}>
+      <NavigationEvents onWillFocus={() => fetchPosts()} />
       <View>
         <View style={styles.ProfilePicture}>
           <View style={styles.icon}>
