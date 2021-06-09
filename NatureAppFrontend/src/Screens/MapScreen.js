@@ -5,7 +5,7 @@ import MapView from "react-native-maps";
 
 const MapScreen = () => {
   const [latitude, setLatitude] = useState(38.7223);
-  const [longitude, setLongitude] = useState(9.1393);
+  const [longitude, setLongitude] = useState(-9.1393);
 
   const getCurrentPosition = async () => {
     try {
