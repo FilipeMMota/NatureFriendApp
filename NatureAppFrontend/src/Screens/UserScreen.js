@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  Image,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -17,15 +18,49 @@ import { AntDesign } from "@expo/vector-icons";
 import { NavigationEvents } from "react-navigation";
 import Moment from "moment"; // Usado para formatar a data recebida da base de dados
 import Posts from "../Components/Posts";
+import * as ImagePicker from "expo-image-picker";
 
 const UserScreen = function ({ navigation }) {
-  const { state: authState, signout, fetchUser } = useContext(AuthContext);
+  const {
+    state: authState,
+    signout,
+    fetchUser,
+    uploadUserImage,
+  } = useContext(AuthContext);
   const { state: postsState, fetchPosts } = useContext(PostsContext);
+  const [triggerReload, settriggerReload] = useState(null);
   const posts = postsState.posts;
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [triggerReload]);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      const image = result;
+      const formData = new FormData();
+      formData.append("profilePicture", {
+        name: `${authState.username}.jpg"`,
+        type: "image/jpg",
+        uri:
+          Platform.OS === "android"
+            ? image.uri
+            : image.uri.replace("file://", ""),
+      });
+      uploadUserImage({ formData }).then((res) => {
+        if (res.message == true) {
+          settriggerReload(triggerReload + 1);
+        }
+      });
+    }
+  };
 
   const AlertSignOut = () =>
     Alert.alert(
@@ -40,13 +75,24 @@ const UserScreen = function ({ navigation }) {
       ],
       { cancelable: false }
     );
+
   return (
     <View style={styles.Content}>
-      <NavigationEvents onWillFocus={() => fetchPosts()} />
+      <NavigationEvents
+        onWillFocus={() => {
+          fetchPosts();
+        }}
+      />
       <View>
         <View style={styles.ProfilePicture}>
+          {authState.image && (
+            <Image
+              source={{ uri: authState.image }}
+              style={{ width: 110, height: 110, borderRadius: 100 }}
+            />
+          )}
           <View style={styles.icon}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => pickImage()}>
               <AntDesign name="pluscircle" color={"#19456b"} size={20} />
             </TouchableOpacity>
           </View>
@@ -72,6 +118,7 @@ const UserScreen = function ({ navigation }) {
                   PostTitle={item.post_title}
                   Descrição={item.post_description}
                   Data={Moment(item.post_date).format("DD/MM/YYYY")}
+                  postImage={item.post_img}
                 ></Posts>
               </TouchableOpacity>
             );
@@ -92,8 +139,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    paddingTop: 78,
-    paddingLeft: 88,
+    position: "absolute",
+    top: 85,
+    left: 85,
+    borderWidth: 2,
+    borderRadius: 100,
+    borderColor: "#FFFFFF",
   },
   ProfilePicture: {
     width: 110,
