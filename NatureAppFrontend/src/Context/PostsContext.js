@@ -20,33 +20,42 @@ const fetchPosts = (dispatch) => {
       url: "http://192.168.1.157:5000/posts",
       headers: { Authorization: `Bearer$${token}` },
     });
-
     dispatch({ type: "get_posts", posts: result.data });
   };
 };
 
 const createPost = (dispatch) => {
-  return async ({
-    capturedPhoto: image,
-    title,
-    description,
-    latitude,
-    longitude,
-  }) => {
+  return async ({ capturedPhoto, title, description, latitude, longitude }) => {
+    const formData = new FormData();
+    formData.append("PostPicture", {
+      name: `${title.split(" ").join("")}_${description
+        .substring(0, 5)
+        .split(" ")
+        .join("")}.jpg`,
+      type: "image/jpg",
+      uri:
+        Platform.OS === "android"
+          ? capturedPhoto
+          : capturedPhoto.replace("file://", ""),
+    });
+
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
+
     const token = await AsyncStorage.getItem("token");
     await axios({
       method: "post",
       url: "http://192.168.1.157:5000/posts",
-      headers: { Authorization: `Bearer$${token}` },
-      data: {
-        image,
-        title,
-        description,
-        latitude,
-        longitude,
+      headers: {
+        Authorization: `Bearer$${token}`,
+        "Content-Type": "multipart/form-data",
       },
+      data: formData,
+    }).then((res) => {
+      console.log("Message", res.data.message);
     });
-    navigate("Map");
   };
 };
 
