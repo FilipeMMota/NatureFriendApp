@@ -7,9 +7,7 @@ const LoadingScreen = function () {
   const { checkAuthentication } = useContext(AuthContext);
 
   useEffect(() => {
-    setTimeout(() => {
-      checkAuthentication();
-    }, 2000);
+    checkAuthentication();
   }, []);
 
   return (
