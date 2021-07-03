@@ -14,7 +14,12 @@ const authReducer = (state, action) => {
     case "signout":
       return { token: null, errorMessage: "" };
     case "user_data":
-      return { ...state, username: action.username, date: action.date };
+      return {
+        ...state,
+        username: action.username,
+        date: action.date,
+        image: action.image,
+      };
     default:
       return state;
   }
@@ -106,12 +111,39 @@ const fetchUser = (dispatch) => {
       method: "get",
       url: "http://192.168.1.157:5000/user",
       headers: { Authorization: `Bearer$${token}` },
-    });
-    dispatch({
-      type: "user_data",
-      username: response.data.username,
-      date: response.data.date,
-    });
+    })
+      .then((res) => {
+        dispatch({
+          type: "user_data",
+          username: res.data.username,
+          date: res.data.date,
+          image: "http://192.168.1.157:5000/" + res.data.image,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+const uploadUserImage = (dispatch) => {
+  return async ({ formData }) => {
+    const token = await AsyncStorage.getItem("token");
+    const sucess = { message: true };
+    try {
+      await axios({
+        method: "post",
+        url: "http://192.168.1.157:5000/profile",
+        headers: {
+          Authorization: `Bearer$${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+      });
+      return sucess;
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -124,6 +156,7 @@ export const { Provider, Context } = DataContext(
     clearErrorMessage,
     checkAuthentication,
     fetchUser,
+    uploadUserImage,
   },
-  { token: null, errorMessage: "", username: "", date: "" }
+  { token: null, errorMessage: "", username: "", date: "", image: "" }
 );
