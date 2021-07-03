@@ -79,6 +79,20 @@ const CameraScreen = function ({ navigation }) {
       { cancelable: false }
     );
 
+  const AlertForCoordinatesNull = () =>
+    Alert.alert(
+      "Localização falhou",
+      "A Nature Friend App não conseguiu ler as suas coordenas!\nPor favor verifique que está com a localização ativada!",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        { text: "Sim" },
+      ],
+      { cancelable: false }
+    );
+
   useEffect(() => {
     getPermissions();
   }, []);
@@ -228,15 +242,20 @@ const CameraScreen = function ({ navigation }) {
             </View>
             <TouchableOpacity
               style={styles.submitButton}
-              onPress={() =>
-                createPost({
-                  capturedPhoto,
-                  title,
-                  description,
-                  latitude,
-                  longitude,
-                })
-              }
+              onPress={() => {
+                if (latitude === null || longitude === null) {
+                  AlertForCoordinatesNull();
+                } else {
+                  createPost({
+                    capturedPhoto,
+                    title,
+                    description,
+                    latitude,
+                    longitude,
+                  });
+                  setOpen(false);
+                }
+              }}
             >
               <Text style={{ fontWeight: "bold", color: "#FFF" }}>
                 Submeter
