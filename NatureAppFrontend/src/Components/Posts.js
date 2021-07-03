@@ -1,13 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const Posts = function ({ PostTitle, Descrição, Data }) {
+const Posts = function ({ PostTitle, Descrição, Data, postImage }) {
   return (
     <View style={styles.Individual}>
+      <Image
+        source={{ uri: "http://192.168.1.157:5000/" + postImage }}
+        style={{ width: 50, height: 50, borderRadius: 10 }}
+      />
       <Text style={styles.Titulo}>{PostTitle}</Text>
       <Text style={styles.Descricao}>{Descrição}</Text>
       <Text style={styles.Data}>Criado a {Data}</Text>
