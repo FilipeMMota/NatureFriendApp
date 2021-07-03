@@ -11,7 +11,8 @@ router.get("/user", requireAuth, (req, res) => {
   //Rota para a obtenção dos useres
   const username = req.user.user_name;
   const date = req.user.date;
-  res.status(200).send({ username, date });
+  const image = req.user.user_img;
+  res.status(200).send({ username, date, image });
 });
 
 router.post("/signup", (req, res, next) => {
