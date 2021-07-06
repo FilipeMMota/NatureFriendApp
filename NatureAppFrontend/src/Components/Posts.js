@@ -10,7 +10,14 @@ const Posts = function ({ PostTitle, Descrição, Data, postImage }) {
     <View style={styles.Individual}>
       <Image
         source={{ uri: "http://192.168.1.157:5000/" + postImage }}
-        style={{ width: 50, height: 50, borderRadius: 10 }}
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: 10,
+          position: "absolute",
+          top: hp("2%"),
+          left: wp("5%"),
+        }}
       />
       <Text style={styles.Titulo}>{PostTitle}</Text>
       <Text style={styles.Descricao}>{Descrição}</Text>
