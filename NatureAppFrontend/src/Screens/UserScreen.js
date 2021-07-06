@@ -27,9 +27,9 @@ const UserScreen = function ({ navigation }) {
     fetchUser,
     uploadUserImage,
   } = useContext(AuthContext);
-  const { state: postsState, fetchPosts } = useContext(PostsContext);
+  const { state: postsState, fetchUserPosts } = useContext(PostsContext);
   const [triggerReload, settriggerReload] = useState(null);
-  const posts = postsState.posts;
+  const posts = postsState.userPosts;
 
   useEffect(() => {
     fetchUser();
@@ -80,7 +80,7 @@ const UserScreen = function ({ navigation }) {
     <View style={styles.Content}>
       <NavigationEvents
         onWillFocus={() => {
-          fetchPosts();
+          fetchUserPosts();
         }}
       />
       <View>
@@ -109,11 +109,21 @@ const UserScreen = function ({ navigation }) {
       <View style={styles.Posts}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          keyExtractor={(posts) => posts.post_title}
+          keyExtractor={(posts) => posts.post_id.toString()}
           data={posts}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate("Posts")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Posts", {
+                    id: item.post_id,
+                    title: item.post_title,
+                    description: item.post_description,
+                    date: Moment(item.post_date).format("DD/MM/YYYY"),
+                    postImage: item.post_img,
+                  })
+                }
+              >
                 <Posts
                   PostTitle={item.post_title}
                   Descrição={item.post_description}
