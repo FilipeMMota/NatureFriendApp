@@ -37,11 +37,16 @@ router.post(
       }
 
       const query = `UPDATE users SET user_img = '${req.file.filename}' WHERE user_id = ${req.user.user_id}`; // Atualizamos na base de dados a foto que foi adicionada
-      await db.query(query);
-
-      res.status(200).json({
-        message: "success!",
-      });
+      await db
+        .query(query)
+        .then(() => {
+          res.status(200).json({
+            message: "success!",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (err) {
       console.log(err);
     }

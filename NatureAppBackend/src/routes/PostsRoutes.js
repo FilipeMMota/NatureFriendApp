@@ -27,11 +27,17 @@ router.get("/userPosts", requireAuth, async (req, res) => {
   try {
     const { user_id: id } = req.user;
     const query = `SELECT * FROM posts WHERE user_id = '${id}'`; // Obtenção das publicações de um certo id de um utilizador
-    const result = await db.query(query);
-
-    res.status(200).send(result.rows);
+    await db
+      .query(query)
+      .then((response) => {
+        res.status(200).send(response.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(422).send("Algo correu mal");
+      });
   } catch (err) {
-    return res.status(422).send("Algo correu mal");
+    return console.log(err);
   }
 });
 
@@ -39,11 +45,16 @@ router.get("/allPosts", requireAuth, async (req, res) => {
   //Rota para a obtenção de todas as publicações
   try {
     const query = `SELECT * FROM posts`; // Obtenção de todas as publicações feitas pelos utilizadores
-    const result = await db.query(query);
-
-    res.status(200).send(result.rows);
+    await db
+      .query(query)
+      .then((response) => {
+        res.status(200).send(response.rows);
+      })
+      .catch((err) => {
+        res.status(422).send("Algo correu mal");
+      });
   } catch (err) {
-    return res.status(422).send("Algo correu mal");
+    return console.log(err);
   }
 });
 
@@ -68,11 +79,16 @@ router.post(
       const query = `INSERT INTO posts (user_id, post_img, post_title, post_description, post_lat , post_lng, post_date) VALUES (${id}, '${
         req.file.filename
       }', '${title}', '${description}', '${latitude}', '${longitude}', '${getCurrentDate()}')`;
-      await db.query(query);
-
-      return res.status(200).send({ message: "Post Created with sucess" });
+      await db
+        .query(query)
+        .then(() => {
+          res.status(200).send({ message: "Post Created with sucess" });
+        })
+        .catch(() => {
+          res.status(422).send("Algo correu mal"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
+        });
     } catch (err) {
-      return console.log(err); //res.status(422).send("Algo correu mal"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
+      return console.log(err);
     }
   }
 );
@@ -83,21 +99,33 @@ router.delete("/posts", requireAuth, async (req, res) => {
     const { id } = req.body;
 
     const query = `SELECT post_img FROM posts WHERE post_id = ${id}`; // remoção de uma publicação de um utilizador
-    const result = await db.query(query);
+    await db
+      .query(query)
+      .then(async (response) => {
+        let files = fs.readdirSync(PostImagesPath);
+        if (files.includes(response.rows[0].post_img)) {
+          fs.unlinkSync(
+            path.join(__dirname, "../PostImages") +
+              "\\" +
+              response.rows[0].post_img
+          );
+        }
 
-    let files = fs.readdirSync(PostImagesPath);
-    if (files.includes(result.rows[0].post_img)) {
-      fs.unlinkSync(
-        path.join(__dirname, "../PostImages") + "\\" + result.rows[0].post_img
-      );
-    }
-
-    const queryDelete = `DELETE FROM posts WHERE post_id = ${id}`; // remoção de uma publicação de um utilizador
-    await db.query(queryDelete);
-
-    res.status(200).send({ message: "Post Deleted" });
+        const queryDelete = `DELETE FROM posts WHERE post_id = ${id}`; // remoção de uma publicação de um utilizador
+        await db
+          .query(queryDelete)
+          .then(() => {
+            res.status(200).send({ message: "Post Deleted" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        res.status(422).send("Algo correu mal");
+      });
   } catch (err) {
-    return console.log(err); //res.status(422).send("Algo correu mal");
+    return console.log(err);
   }
 });
 

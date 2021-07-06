@@ -37,12 +37,17 @@ router.post("/signup", (req, res, next) => {
 
     try {
       const query = `INSERT INTO users (user_email, user_name, user_password, date) VALUES ('${email}', '${username}', '${hash}', '${getCurrentDate()}')`; // Crição de um novo User
-      await db.query(query);
-
-      const token = jwt.sign({ email, username }, process.env.JWT_KEY); // Criação de um token que tem associado o emaill e o username introduzidos
-      res.status(200).send({ token }); //envio do token para uso posterior nos requests
+      await db
+        .query(query)
+        .then(() => {
+          const token = jwt.sign({ email, username }, process.env.JWT_KEY); // Criação de um token que tem associado o emaill e o username introduzidos
+          res.status(200).send({ token }); //envio do token para uso posterior nos requests
+        })
+        .catch((err) => {
+          return res.status(422).send("Username ou email já existente"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
+        });
     } catch (err) {
-      return res.status(422).send("Username ou email já existente"); // Caso algo no processo de criação de um usuário ou na criação do token correr mal é mandada uma mensagem de erro
+      console.log(err);
     }
   });
 });
@@ -70,26 +75,30 @@ router.post("/signin", async (req, res) => {
 
   try {
     const query = `SELECT user_name, user_email, user_password FROM users WHERE user_email = '${email}'`; // Verifica se existe um user com este email e se existir retirra o resto dos dados
-    const result = await db.query(query);
+    await db
+      .query(query)
+      .then(async (response) => {
+        const resultToString = JSON.stringify(response.rows[0]); // Preparação dos dados para poderem ser lidos
+        const {
+          user_name,
+          user_email,
+          user_password: userPassword,
+        } = JSON.parse(resultToString);
 
-    const resultToString = JSON.stringify(result.rows[0]); // Preparação dos dados para poderem ser lidos
-    const {
-      user_name,
-      user_email,
-      user_password: userPassword,
-    } = JSON.parse(resultToString);
+        await comparePassword(password, userPassword); // Verificação da password
 
-    await comparePassword(password, userPassword); // Verificação da password
-
-    const token = jwt.sign(
-      { email: user_email, username: user_name },
-      process.env.JWT_KEY
-    ); // Criação de um token que tem associado o emaill e o username introduzidos
-    res.send({ token }); //envio do token para uso posterior nos requests
+        const token = jwt.sign(
+          { email: user_email, username: user_name },
+          process.env.JWT_KEY
+        ); // Criação de um token que tem associado o emaill e o username introduzidos
+        res.send({ token }); //envio do token para uso posterior nos requests
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(422).send({ error: "O email ou a password estão errados." }); // caso algo corra mal
+      });
   } catch (err) {
-    return res
-      .status(422)
-      .send({ error: "O email ou a password estão errados." }); // caso algo corra mal
+    return console.log(err);
   }
 });
 
