@@ -3,8 +3,8 @@ const authRoutes = require("./routes/AuthRoutes");
 const requireAuth = require("./middleware/requireAuth");
 const postsRoutes = require("./routes/PostsRoutes");
 const userRoutes = require("./routes/UserRoutes");
-const UserImages = require("path").join(__dirname, "/UserImages");
-const PostImages = require("path").join(__dirname, "/PostImages");
+const UserImages = require("path").join(__dirname, "/UserImages"); // Pasta onde são guardadas as fotos de perfil
+const PostImages = require("path").join(__dirname, "/PostImages"); // Pasta onde são guardadas as fotos das publicações
 
 const app = express();
 const port = 5000; // Porta onde o servidor está a correr
