@@ -48,8 +48,10 @@ router.post("/signup", (req, res, next) => {
 });
 
 const comparePassword = function (candidatePassword, userPassword) {
+  // Esta função serve para comparar a password que temos na base de dados com a que foi introduzida pelo utilizador
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, userPassword, (err, isMatch) => {
+      //Esta função compara uma password hashed com uma password em string normal.
       if (err) {
         return reject(err);
       }
