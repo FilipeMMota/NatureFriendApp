@@ -1,24 +1,69 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Image,
+  Alert,
 } from "react-native";
+import { Context as PostsContext } from "../Context/PostsContext";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
-const PostsScreen = function () {
+const PostsScreen = function ({ navigation }) {
+  const { deletePost } = useContext(PostsContext);
+  const id = navigation.getParam("id");
+  const title = navigation.getParam("title");
+  const description = navigation.getParam("description");
+  const date = navigation.getParam("date");
+  const postImage = navigation.getParam("postImage");
+
+  const AlertDeletePost = () =>
+    Alert.alert(
+      "Problema resolvido?",
+      'Ao clicar em "Sim" esta publicação será apagada!\nTem a certeza que o problema está resolvido? ',
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        { text: "Sim", onPress: () => deletePost({ id }) },
+      ],
+      { cancelable: false }
+    );
+
   return (
     <View style={styles.Content}>
       <View>
-        <Text style={styles.Titulo}>Lixo na floresta</Text>
-        <Text style={styles.Data}>Criado a 27/05/2021</Text>
-        <Text style={styles.Description}>Descrição</Text>
-        <TextInput style={styles.DescriptionField} />
+        <Image
+          source={{ uri: "http://192.168.1.157:5000/" + `${postImage}` }}
+          style={{
+            height: 200,
+            width: 300,
+            borderRadius: 20,
+            marginTop: 60,
+            alignSelf: "center",
+          }}
+        />
+        <Text style={styles.Titulo}>{title}</Text>
+        <Text style={styles.Data}>{date}</Text>
+        <View style={styles.DescriptionField}>
+          {description ? (
+            <Text style={styles.Description}>{description}</Text>
+          ) : (
+            <Text style={styles.Description}>
+              Esta publicação não tem descrição
+            </Text>
+          )}
+        </View>
       </View>
       <TouchableOpacity
         style={styles.SolvedButton}
-        onPress={() => console.log("Ta resolvido")}
+        onPress={() => AlertDeletePost()}
       >
         <Text style={styles.Text}>Problema resolvido!</Text>
       </TouchableOpacity>
@@ -29,7 +74,7 @@ const PostsScreen = function () {
 const styles = StyleSheet.create({
   Content: {
     flex: 1,
-    backgroundColor: "#98EBB1",
+    backgroundColor: "#f1f3f8",
     alignItems: "center",
   },
 
@@ -37,7 +82,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     alignSelf: "center",
-    marginTop: 150,
+    marginTop: 20,
+    marginHorizontal: 20,
   },
   Data: {
     fontSize: 13,
@@ -45,21 +91,21 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   Description: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginTop: 30,
+    fontSize: 18,
+    marginTop: 10,
+    marginHorizontal: 10,
   },
   DescriptionField: {
-    width: 320,
-    height: 350,
+    width: wp("85%"),
+    height: hp("33%"),
     backgroundColor: "#FFFFFF",
-    borderRadius: 25,
-    marginTop: 25,
+    borderRadius: 20,
+    marginTop: 15,
     borderWidth: 1,
     borderColor: "gray",
   },
   SolvedButton: {
-    backgroundColor: "#011936",
+    backgroundColor: "#19456b",
     borderRadius: 15,
     paddingHorizontal: 15,
     borderWidth: 0,
@@ -75,6 +121,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
     fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
