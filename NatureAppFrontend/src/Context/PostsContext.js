@@ -5,22 +5,38 @@ import { navigate } from "../navigationRef";
 
 const postsReducer = (state, action) => {
   switch (action.type) {
-    case "get_posts":
-      return { posts: action.posts };
+    case "get_user_posts":
+      return { userPosts: action.userPosts };
+    case "get_all_posts":
+      return { allPosts: action.allPosts };
     default:
       return state;
   }
 };
 
-const fetchPosts = (dispatch) => {
+const fetchUserPosts = (dispatch) => {
   return async () => {
     const token = await AsyncStorage.getItem("token");
     const result = await axios({
       method: "get",
-      url: "http://192.168.1.157:5000/posts",
+      url: "http://192.168.1.157:5000/userPosts",
       headers: { Authorization: `Bearer$${token}` },
     });
-    dispatch({ type: "get_posts", posts: result.data });
+    dispatch({ type: "get_user_posts", userPosts: result.data });
+  };
+};
+
+const fetchAllPosts = (dispatch) => {
+  return async () => {
+    const token = await AsyncStorage.getItem("token");
+    const result = await axios({
+      method: "get",
+      url: "http://192.168.1.157:5000/allPosts",
+      headers: { Authorization: `Bearer$${token}` },
+    }).then((res) => {
+      console.log(res.data);
+      dispatch({ type: "get_all_posts", allPosts: res.data });
+    });
   };
 };
 
@@ -59,8 +75,25 @@ const createPost = (dispatch) => {
   };
 };
 
+const deletePost = () => {
+  return async ({ id }) => {
+    console.log(id);
+    const token = await AsyncStorage.getItem("token");
+    await axios({
+      method: "delete",
+      url: "http://192.168.1.157:5000/posts",
+      headers: {
+        Authorization: `Bearer$${token}`,
+      },
+      data: { id },
+    }).then((res) => {
+      console.log(res.data.message);
+    });
+  };
+};
+
 export const { Provider, Context } = DataContext(
   postsReducer,
-  { fetchPosts, createPost },
-  { posts: [] }
+  { fetchUserPosts, createPost, fetchAllPosts, deletePost },
+  { userPosts: [], allPosts: [] }
 );
