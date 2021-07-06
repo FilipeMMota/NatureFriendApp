@@ -83,12 +83,40 @@ const CameraScreen = function ({ navigation }) {
     Alert.alert(
       "Localização falhou",
       "A Nature Friend App não conseguiu ler as suas coordenas!\nPor favor verifique que está com a localização ativada!",
+      [{ text: "Ok" }],
+      { cancelable: false }
+    );
+
+  const AlertForNoTitle = () =>
+    Alert.alert(
+      "Publicação sem título",
+      "Todos as publicações têm de ter descrição e este não pode ser maior que 22 caracteres",
+      [{ text: "Ok" }],
+      { cancelable: false }
+    );
+
+  const AlertSubmitPost = () =>
+    Alert.alert(
+      "Publicar Problema?",
+      "Tem a certeza que pretende submeter este problema?",
       [
         {
           text: "Cancelar",
           style: "cancel",
         },
-        { text: "Sim" },
+        {
+          text: "Sim",
+          onPress: () => {
+            createPost({
+              capturedPhoto,
+              title,
+              description,
+              latitude,
+              longitude,
+            });
+            setOpen(false);
+          },
+        },
       ],
       { cancelable: false }
     );
@@ -245,15 +273,10 @@ const CameraScreen = function ({ navigation }) {
               onPress={() => {
                 if (latitude === null || longitude === null) {
                   AlertForCoordinatesNull();
+                } else if (title === "" || title.length > 22) {
+                  AlertForNoTitle();
                 } else {
-                  createPost({
-                    capturedPhoto,
-                    title,
-                    description,
-                    latitude,
-                    longitude,
-                  });
-                  setOpen(false);
+                  AlertSubmitPost();
                 }
               }}
             >
