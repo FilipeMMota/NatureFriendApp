@@ -63,7 +63,12 @@ const navigator = createSwitchNavigator({
               headerShown: false,
             },
           },
-          Posts: PostsScreen,
+          Posts: {
+            screen: PostsScreen,
+            navigationOptions: {
+              headerShown: false,
+            },
+          },
         },
         {
           navigationOptions: {
