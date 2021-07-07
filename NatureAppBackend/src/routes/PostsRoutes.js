@@ -44,7 +44,7 @@ router.get("/userPosts", requireAuth, async (req, res) => {
 router.get("/allPosts", requireAuth, async (req, res) => {
   //Rota para a obtenção de todas as publicações
   try {
-    const query = `SELECT * FROM posts`; // Obtenção de todas as publicações feitas pelos utilizadores
+    const query = `SELECT * FROM posts WHERE post_lat IS NOT NULL`; // Obtenção de todas as publicações feitas pelos utilizadores
     await db
       .query(query)
       .then((response) => {
