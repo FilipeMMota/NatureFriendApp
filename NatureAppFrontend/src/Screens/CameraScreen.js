@@ -107,6 +107,9 @@ const CameraScreen = function ({ navigation }) {
         {
           text: "Sim",
           onPress: () => {
+            console.log(latitude);
+            setLatitude(null);
+            setLongitude(null);
             createPost({
               capturedPhoto,
               title,
@@ -134,15 +137,19 @@ const CameraScreen = function ({ navigation }) {
   }
 
   async function takePicture() {
-    if (camRef) {
-      const data = await camRef.current.takePictureAsync();
-      setCapturedPhoto(data.uri);
-      setOpen(true);
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Accuracy.BestForNavigation,
-      });
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
+    try {
+      if (camRef) {
+        const data = await camRef.current.takePictureAsync();
+        setCapturedPhoto(data.uri);
+        setOpen(true);
+        const location = await Location.getCurrentPositionAsync({
+          accuracy: Accuracy.BestForNavigation,
+        });
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -242,6 +249,8 @@ const CameraScreen = function ({ navigation }) {
                 setOpen(false);
                 setTitle("");
                 setDescription("");
+                setLatitude(null);
+                setLongitude(null);
               }}
             >
               <AntDesign name="arrowleft" size={40} color="#19456b" />
