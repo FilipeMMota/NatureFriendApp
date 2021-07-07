@@ -16,27 +16,46 @@ const postsReducer = (state, action) => {
 
 const fetchUserPosts = (dispatch) => {
   return async () => {
-    const token = await AsyncStorage.getItem("token");
-    const result = await axios({
-      method: "get",
-      url: "http://192.168.1.157:5000/userPosts",
-      headers: { Authorization: `Bearer$${token}` },
-    });
-    dispatch({ type: "get_user_posts", userPosts: result.data });
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        await axios({
+          method: "get",
+          url: "http://192.168.1.157:5000/userPosts",
+          headers: { Authorization: `Bearer$${token}` },
+        })
+          .then((response) => {
+            dispatch({ type: "get_user_posts", userPosts: response.data });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
 const fetchAllPosts = (dispatch) => {
   return async () => {
-    const token = await AsyncStorage.getItem("token");
-    const result = await axios({
-      method: "get",
-      url: "http://192.168.1.157:5000/allPosts",
-      headers: { Authorization: `Bearer$${token}` },
-    }).then((res) => {
-      console.log(res.data);
-      dispatch({ type: "get_all_posts", allPosts: res.data });
-    });
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        await axios({
+          method: "get",
+          url: "http://192.168.1.157:5000/allPosts",
+          headers: { Authorization: `Bearer$${token}` },
+        })
+          .then((res) => {
+            console.log(res.data);
+            dispatch({ type: "get_all_posts", allPosts: res.data });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
@@ -60,35 +79,52 @@ const createPost = (dispatch) => {
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
 
-    const token = await AsyncStorage.getItem("token");
-    await axios({
-      method: "post",
-      url: "http://192.168.1.157:5000/posts",
-      headers: {
-        Authorization: `Bearer$${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
-    }).then((res) => {
-      console.log("Message", res.data.message);
-    });
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        await axios({
+          method: "post",
+          url: "http://192.168.1.157:5000/posts",
+          headers: {
+            Authorization: `Bearer$${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData,
+        })
+          .then((res) => {
+            console.log("Message", res.data.message);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
 const deletePost = () => {
   return async ({ id }) => {
-    console.log(id);
-    const token = await AsyncStorage.getItem("token");
-    await axios({
-      method: "delete",
-      url: "http://192.168.1.157:5000/posts",
-      headers: {
-        Authorization: `Bearer$${token}`,
-      },
-      data: { id },
-    }).then((res) => {
-      console.log(res.data.message);
-    });
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        await axios({
+          method: "delete",
+          url: "http://192.168.1.157:5000/posts",
+          headers: {
+            Authorization: `Bearer$${token}`,
+          },
+          data: { id },
+        })
+          .then((res) => {
+            console.log(res.data.message);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
