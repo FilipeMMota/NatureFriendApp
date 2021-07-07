@@ -159,6 +159,24 @@ const fetchUser = (dispatch) => {
               date: res.data.date,
               image: "http://192.168.1.157:5000/" + res.data.image,
             });
+            //Este código serve apenas para o front end com comunicação para o backend na internet
+            // if (res.data.image.split("_").length > 1) {
+            //   console.log("boas");
+            //   dispatch({
+            //     type: "user_data",
+            //     username: res.data.username,
+            //     date: res.data.date,
+            //     image:
+            //       "https://naturefriend-mobile.herokuapp.com/" + res.data.image,
+            //   });
+            // } else {
+            //   dispatch({
+            //     type: "user_data",
+            //     username: res.data.username,
+            //     date: res.data.date,
+            //     image: "https://naturefriend.herokuapp.com/" + res.data.image,
+            //   });
+            // }
           })
           .catch((err) => {
             console.log(err);
