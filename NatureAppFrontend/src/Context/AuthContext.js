@@ -33,13 +33,18 @@ const clearErrorMessage = (dispatch) => {
 
 const checkAuthentication = (dispatch) => {
   return async () => {
-    const token = await AsyncStorage.getItem("token");
-    if (token) {
-      dispatch({ type: "authentication", payload: token });
-      navigate("Camera");
-    } else {
-      navigate("Register");
-    }
+    await AsyncStorage.getItem("token")
+      .then((token) => {
+        if (token) {
+          dispatch({ type: "authentication", payload: token });
+          navigate("Camera");
+        } else {
+          navigate("Register");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
@@ -57,17 +62,27 @@ const signup = (dispatch) => {
           payload: "As passwords não correspondem!",
         });
       } else {
-        const response = await axios.post("http://192.168.1.157:5000/signup", {
-          email,
-          username,
-          password,
-        });
-        await AsyncStorage.setItem("token", response.data.token);
-        dispatch({ type: "authentication", payload: response.data.token });
-        navigate("Camera");
+        await axios
+          .post("http://192.168.1.157:5000/signup", {
+            email,
+            username,
+            password,
+          })
+          .then(async (res) => {
+            await AsyncStorage.setItem("token", res.data.token);
+            dispatch({ type: "authentication", payload: res.data.token });
+            navigate("Camera");
+          })
+          .catch((err) => {
+            console.log(err);
+            dispatch({
+              type: "add_error",
+              payload: "Algo correu mal com o resgisto!",
+            });
+          });
       }
     } catch (err) {
-      dispatch({ type: "add_error", payload: "Este email já existe!" });
+      dispatch({ type: "add_error", payload: "Algo correu mal" });
     }
   };
 };
@@ -81,44 +96,73 @@ const signin = (dispatch) => {
           payload: "Precisa de preencher todos os campos!",
         });
       } else {
-        const response = await axios.post("http://192.168.1.157:5000/signin", {
-          email,
-          password,
-        });
-        await AsyncStorage.setItem("token", response.data.token);
-        dispatch({ type: "authentication", payload: response.data.token });
-        navigate("Camera");
+        await axios
+          .post("http://192.168.1.157:5000/signin", {
+            email,
+            password,
+          })
+          .then(async (res) => {
+            await AsyncStorage.setItem("token", res.data.token)
+              .then(() => {
+                dispatch({ type: "authentication", payload: res.data.token });
+                navigate("Camera");
+              })
+              .catch((err) => {
+                console.log(err);
+                dispatch({
+                  type: "add_error",
+                  payload: "Algo correu mal com o token!",
+                });
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            dispatch({
+              type: "add_error",
+              payload: "Algo correu mal com o login!",
+            });
+          });
       }
     } catch (err) {
       console.log(err);
-      dispatch({ type: "add_error", payload: "Algo correu mal com o login!" });
+      dispatch({ type: "add_error", payload: "Algo correu mal" });
     }
   };
 };
 
 const signout = (dispatch) => {
   return async () => {
-    await AsyncStorage.removeItem("token");
-    dispatch({ type: "signout" });
-    navigate("Login");
+    await AsyncStorage.removeItem("token")
+      .then(() => {
+        dispatch({ type: "signout" });
+        navigate("Login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
 const fetchUser = (dispatch) => {
   return async () => {
-    const token = await AsyncStorage.getItem("token");
-    const response = await axios({
-      method: "get",
-      url: "http://192.168.1.157:5000/user",
-      headers: { Authorization: `Bearer$${token}` },
-    })
-      .then((res) => {
-        dispatch({
-          type: "user_data",
-          username: res.data.username,
-          date: res.data.date,
-          image: "http://192.168.1.157:5000/" + res.data.image,
-        });
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        await axios({
+          method: "get",
+          url: "http://192.168.1.157:5000/user",
+          headers: { Authorization: `Bearer$${token}` },
+        })
+          .then((res) => {
+            dispatch({
+              type: "user_data",
+              username: res.data.username,
+              date: res.data.date,
+              image: "http://192.168.1.157:5000/" + res.data.image,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -128,22 +172,32 @@ const fetchUser = (dispatch) => {
 
 const uploadUserImage = (dispatch) => {
   return async ({ formData }) => {
-    const token = await AsyncStorage.getItem("token");
-    const sucess = { message: true };
-    try {
-      await axios({
-        method: "post",
-        url: "http://192.168.1.157:5000/profile",
-        headers: {
-          Authorization: `Bearer$${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-        data: formData,
+    await AsyncStorage.getItem("token")
+      .then(async (token) => {
+        const sucess = { message: true };
+        try {
+          await axios({
+            method: "post",
+            url: "http://192.168.1.157:5000/profile",
+            headers: {
+              Authorization: `Bearer$${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+            data: formData,
+          })
+            .then(() => {
+              return sucess;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } catch (err) {
+          console.log(err);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      return sucess;
-    } catch (err) {
-      console.log(err);
-    }
   };
 };
 
