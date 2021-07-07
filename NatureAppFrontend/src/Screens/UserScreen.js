@@ -54,10 +54,8 @@ const UserScreen = function ({ navigation }) {
             ? image.uri
             : image.uri.replace("file://", ""),
       });
-      uploadUserImage({ formData }).then((res) => {
-        if (res.message == true) {
-          settriggerReload(triggerReload + 1);
-        }
+      uploadUserImage({ formData }).then(() => {
+        settriggerReload(triggerReload + 1);
       });
     }
   };
