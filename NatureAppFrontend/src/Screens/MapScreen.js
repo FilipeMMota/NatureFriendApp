@@ -60,12 +60,12 @@ const MapScreen = () => {
                 <View style={{ padding: 50, borderRadius: 30 }}>
                   <View>
                     <Text>
-                      <Image
+                      {/*<Image
                         source={{
                           uri: "http://192.168.1.157:5000/" + marker.post_img,
                         }}
                         style={{ width: 50, height: 50, borderRadius: 10 }}
-                      />
+                      />*/}
                     </Text>
                   </View>
                   <Text>{marker.post_title}</Text>
